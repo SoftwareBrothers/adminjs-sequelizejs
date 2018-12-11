@@ -1,0 +1,11 @@
+{
+  "name": "admin-bro-sequelizejs",
+  "version": "0.1.0",
+  "description": "Sequelize adapter for AdminBro",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Wojciech Krysiak",
+  "license": "MIT"
+}
