@@ -7,5 +7,6 @@ before_script:
 env:
   - POSTGRES_USER=postgres
   - NODE_ENV=test
+  - POSTGRES_HOST=localhost
 node_js:
   - '8'
