@@ -1,1 +1,10 @@
 language: node_js
+services:
+  - postgresql
+before_script:
+  - npm run sequelize db:create
+  - npm run sequelize db:migrate
+env:
+  - POSTGRES_USER=postgres
+node_js:
+  - '8'
