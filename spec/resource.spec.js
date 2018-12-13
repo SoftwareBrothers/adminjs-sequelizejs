@@ -3,15 +3,16 @@ const Resource = require('../src/resource')
 const Property = require('../src/property')
 const config = require('../config/config')[process.env.NODE_ENV]
 
+const db = require('../models/index.js')
+
 describe('Resource', function () {
   before(function () {
-    this.db = require('../models/index.js')
-    this.SequelizeModel = this.db.sequelize.models.User
+    this.SequelizeModel = db.sequelize.models.User
     this.resource = new Resource(this.SequelizeModel)
   })
 
   after(function () {
-    this.db.sequelize.close()
+    db.sequelize.close()
   })
 
   afterEach(function () {

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha spec/index.js",
     "cover": "NODE_ENV=test ./node_modules/nyc/bin/nyc.js --reporter=html -x=spec -x=coverage  --all=true npm test",
-    "sequelize": "./node_modules/.bin/sequelize"
+    "sequelize": "./node_modules/.bin/sequelize",
+    "lint": "./node_modules/eslint/bin/eslint.js './spec/**/*.js' './src/**/*.js'"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,9 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
+    "eslint": "^5.10.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "factory-girl": "^5.0.4",
     "lodash": "^4.17.11",
     "mocha": "^5.2.0",

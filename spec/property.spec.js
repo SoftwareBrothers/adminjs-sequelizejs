@@ -1,13 +1,14 @@
 const Property = require('../src/property')
 
+const db = require('../models/index.js')
+
 describe('Property', function () {
   before(function () {
-    this.db = require('../models/index.js')
-    this.SequelizeModel = this.db.sequelize.models.User
+    this.SequelizeModel = db.sequelize.models.User
   })
 
   after(function () {
-    this.db.sequelize.close()
+    db.sequelize.close()
   })
 
   describe('#type', function () {

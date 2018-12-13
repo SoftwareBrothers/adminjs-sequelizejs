@@ -1,7 +1,8 @@
+const Sequelize = require('sequelize')
+
 const Database = require('../src/database')
 const Resource = require('../src/resource')
 const db = require('../models/index.js')
-const Sequelize = require('sequelize')
 const config = require('../config/config')
 
 describe('Database', function () {
