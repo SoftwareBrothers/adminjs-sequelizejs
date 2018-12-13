@@ -6,5 +6,6 @@ before_script:
   - npm run sequelize db:migrate
 env:
   - POSTGRES_USER=postgres
+  - NODE_ENV=test
 node_js:
   - '8'
