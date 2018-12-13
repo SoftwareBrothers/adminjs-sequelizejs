@@ -1,21 +1,21 @@
 language: node_js
 services:
-  - postgresql
+- postgresql
 before_script:
-  - npm run sequelize db:create
-  - npm run sequelize db:migrate
+- npm run sequelize db:create
+- npm run sequelize db:migrate
 env:
-  - POSTGRES_USER=postgres NODE_ENV=test POSTGRES_HOST=localhost
+- POSTGRES_USER=postgres NODE_ENV=test POSTGRES_HOST=localhost
 node_js:
-  - '8'
+- '8'
 script:
-  - npm run lint
-  - npm test
+- npm run lint
+- npm test
 deploy:
   provider: npm
   email: wojciech.g.krysiak@gmail.com
   api_key:
-    secure: d2hFrWBiWpbxP/gRKTVf6AzvYvr1H2mLV6qHf0HZk7vedaT3j8mpW2/galussSieHRPhRVWqbERmB7Ycvd477/Br20d3Q0YJgvDvbalGBNp+7AkHwgVoo7pkLgkB1CRcgbK2l4dI1++cIIOsw6EAkU+w4IaqGNOvAMEWYN74dIgSlhbdN+47lRyMk2Z+DHfkePToINKzDgMfwDCG2P+IdrA0qdx81fQrvys143Y2VEanItbD+hbm4FijtpNtDv0FgNvSMeZcWc/lUgUSabdoZ8U0qP+P5Deba5NO5cm2u0X562k2ndwwKQazaCbvG6drXbHyHihTlj5CNtqtBX/ZPfCQkls9morQqfxl5gd6apoq+tFYxKMUREcrbKh+8girXDuB4/TAx+QmTbnpOvyLdf5c/mmkKc8+O9z7yjMQeA8TJqWESNNAFClb3kPGVvQlf5hfHE7JP7CMIQWJfVgJW1JFi6BCsZNYXG3elFu5mDuluJxg1DoDt4kkjxmJkwQaR1GAOcwkWqDo1knff7diZEXVNxSNAxK4YiXphz4SCDwey3F0aU1vIFMoT9mLDC6CfhVMQwyCdFD1PsPdBo8bJAO5dNF/udyoyPYQ1tumWqd0WlpAEj+wLg3TSrDm0HPkYk6/3j09PrGnW9EGUy0stxps3I1cSSLLC0Nsdj6oM+I=
+    secure: YcmzBJsB7R/ve4uK7kZZnA60OL0LZ4L5M56p9P5610/nNrC8yp1s7KDZNcsd93EhFWcDFoQSFrQCXxuGHuq4IcRLX3J5swUZA0+fH9PViUWDCjierPOUVAb7wFLBFSEHS3g51faL9lZC0NQngtqyCEIqRc5vRbLMKQDCrkSeoHfRwz3xteHZ192NQkLMCmhJQGXAxyj+6+2a1IazDH+FjKS0BiS9c68jKme5t5Fz4frk9a56Rz7xa4gHt/zOajXa1AqcOwqJpBcw5hGNO/8SAMz10HT7IdPKvmhekBb3sF9FYTYTmBxv2sbeMOuqvCFbZOp+38enh1RQPQV0XLsma3+9jITEnevjldrvw2hiUFyz8jTaQxX382a8A+0oGCODqbXCk6r7/fmMIS025DUqUzhuafRxpTimCsPGm5PMkplVtl7eDBWh5O8LDmeH1So47eVFaE2lRFtWtuu/ouvsnjUkAoAuMxqULDYnTL6g6cLEPSp4hRJ1V0RECE0OI0pLo1BLprDzSUdgZNZHQHkj5/2YjTJgjhyDYRhPbsNTncqzGq0MvtP/iObkYrL899X6M8Fm89jXpSQYQPsWopX8Sz3RWS9SiQu6BB8e6q7+MfRWCCEEe+cUJpvFoac8EfPL3gA91jwf3rmaPZnEEQmAPXj/V+EJrvhtrhUPKnwhBVE=
   on:
     tags: true
     repo: SoftwareBrothers/admin-bro-sequelizejs
