@@ -21,6 +21,7 @@ Integration tests require running database. Database connection data are  given 
 
 
 Than you will have to create database and run migrations
+
 ```
 npm run sequelize db:create
 npm run sequelize db:migrate
