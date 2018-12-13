@@ -6,7 +6,8 @@ const {
 } = require('admin-bro')
 
 const Property = require('./property')
-const SEQUELIZE_VALIDATION_ERROR = "SequelizeValidationError"
+
+const SEQUELIZE_VALIDATION_ERROR = 'SequelizeValidationError'
 
 class Resource extends BaseResource {
   static isAdapterFor(rawResource) {
@@ -52,7 +53,7 @@ class Resource extends BaseResource {
   async find(query, { limit = 20, offset = 0, sort = {} }) {
     const { direction, sortBy } = sort
     const sequelizeObjects = await this.SequelizeModel
-      .findAll({ limit, offset, order: [sortBy, direction] })
+      .findAll({ limit, offset, order: [[sortBy, direction.toUpperCase()]] })
     return sequelizeObjects.map(sequelizeObject => new BaseRecord(sequelizeObject.toJSON(), this))
   }
 

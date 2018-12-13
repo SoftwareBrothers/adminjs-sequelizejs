@@ -20,3 +20,4 @@ afterEach(function () {
 
 require('./database.spec.js')
 require('./resource.spec.js')
+require('./property.spec.js')

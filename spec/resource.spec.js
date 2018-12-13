@@ -3,7 +3,7 @@ const Resource = require('../src/resource')
 const Property = require('../src/property')
 const config = require('../config/config')[process.env.NODE_ENV]
 
-describe.only('Resource', function () {
+describe('Resource', function () {
   before(function () {
     this.db = require('../models/index.js')
     this.SequelizeModel = this.db.sequelize.models.User

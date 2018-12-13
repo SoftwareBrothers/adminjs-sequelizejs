@@ -15,6 +15,17 @@ AdminBro.registerAdapter(AdminBroSequelize)
 
 More options can be found on [AdminBro](https://github.com/SoftwareBrothers/admin-bro) official website.
 
+## Testing
+
+Integration tests require running database. Database connection data are  given in `config/config.js`. Make sure you have following env variables set: POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_PORT, POSTGRES_DATABASE, POSTGRES_HOST. Take a look at `config/config.js` to see default values.
+
+
+Than you will have to create database and run migrations
+```
+npm run sequelize db:create
+npm run sequelize db:migrate
+```
+
 ## License
 
 AdminBro is Copyright © 2018 SoftwareBrothers.co. It is free software, and may be redistributed under the terms specified in the [LICENSE](LICENSE) file.
