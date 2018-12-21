@@ -1,6 +1,6 @@
 {
   "name": "admin-bro-sequelizejs",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Sequelize adapter for AdminBro",
   "main": "index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "author": "Wojciech Krysiak",
   "license": "MIT",
   "peerDependencies": {
-    "admin-bro": "^0.2.0",
+    "admin-bro": ">=0.2.0",
     "sequelize": "^4.41.2"
   },
   "devDependencies": {
