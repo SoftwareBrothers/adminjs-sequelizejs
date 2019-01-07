@@ -1,4 +1,7 @@
+/* eslint class-methods-use-this: 0 */
+
 const Sequelize = require('sequelize')
+
 const { Op } = Sequelize
 const {
   BaseResource,
@@ -55,36 +58,35 @@ class Resource extends BaseResource {
     const { from, to } = filter
     return {
       ...from && { [Op.gte]: from },
-      ...to && { [Op.lte]: to }
+      ...to && { [Op.lte]: to },
     }
-  } 
+  }
 
   getDefaultFilter(filter) {
     return {
-      [Op.iRegexp] : filter
+      [Op.iRegexp]: filter,
     }
   }
 
   convertedFilters(filters) {
-    if(!filters) return {}
-    const convertedFilters = {}
-    Object.keys(filters).map(key => {
+    if (!filters) return {}
+    return Object.keys(filters).reduce((obj, key) => {
       const currentFilter = filters[key]
       const isDateFilter = currentFilter.from || currentFilter.to
-      convertedFilters[key] = isDateFilter ? 
-        this.getDateFilter(currentFilter) : this.getDefaultFilter(currentFilter)
-    })
-    return convertedFilters
+      obj[key] = isDateFilter // eslint-disable-line no-param-reassign
+        ? this.getDateFilter(currentFilter) : this.getDefaultFilter(currentFilter)
+      return obj
+    }, {})
   }
 
   async find(filters = {}, { limit = 20, offset = 0, sort = {} }) {
     const { direction, sortBy } = sort
     const sequelizeObjects = await this.SequelizeModel
-      .findAll({ 
+      .findAll({
         where: this.convertedFilters(filters),
-        limit, 
-        offset, 
-        order: [[sortBy, direction.toUpperCase()]] 
+        limit,
+        offset,
+        order: [[sortBy, direction.toUpperCase()]],
       })
     return sequelizeObjects.map(sequelizeObject => new BaseRecord(sequelizeObject.toJSON(), this))
   }
