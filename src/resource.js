@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize')
+const { Op } = Sequelize
 const {
   BaseResource,
   BaseRecord,
@@ -46,14 +47,39 @@ class Resource extends BaseResource {
     return new Property(this.SequelizeModel.attributes[path])
   }
 
-  async count() {
-    return this.SequelizeModel.count()
+  async count(filters) {
+    return this.SequelizeModel.count(({ where: this.convertedFilters(filters) }))
   }
 
-  async find(query, { limit = 20, offset = 0, sort = {} }) {
+  convertedFilters(filters) {
+    if(!filters) return {}
+    const convertedFilters = {}
+    Object.keys(filters).map(key => {
+      const currentFilter = filters[key]
+      if(currentFilter.from || currentFilter.to) {
+        const { from, to } = currentFilter
+        convertedFilters[key] = {
+          ...from && { [Op.gte]: from },
+          ...to && { [Op.lte]: to }
+        }
+      } else {
+        convertedFilters[key] = {
+          [Op.iRegexp] : filters[key]
+        } 
+      }
+    })
+    return convertedFilters
+  }
+
+  async find(filters = {}, { limit = 20, offset = 0, sort = {} }) {
     const { direction, sortBy } = sort
     const sequelizeObjects = await this.SequelizeModel
-      .findAll({ limit, offset, order: [[sortBy, direction.toUpperCase()]] })
+      .findAll({ 
+        where: this.convertedFilters(filters),
+        limit, 
+        offset, 
+        order: [[sortBy, direction.toUpperCase()]] 
+      })
     return sequelizeObjects.map(sequelizeObject => new BaseRecord(sequelizeObject.toJSON(), this))
   }
 
