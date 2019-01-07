@@ -51,22 +51,28 @@ class Resource extends BaseResource {
     return this.SequelizeModel.count(({ where: this.convertedFilters(filters) }))
   }
 
+  setDateFilter(filter) {
+    const { from, to } = filter
+    return {
+      ...from && { [Op.gte]: from },
+      ...to && { [Op.lte]: to }
+    }
+  } 
+
+  setDefaultFilter(filter) {
+    return {
+      [Op.iRegexp] : filter
+    }
+  }
+
   convertedFilters(filters) {
     if(!filters) return {}
     const convertedFilters = {}
     Object.keys(filters).map(key => {
       const currentFilter = filters[key]
-      if(currentFilter.from || currentFilter.to) {
-        const { from, to } = currentFilter
-        convertedFilters[key] = {
-          ...from && { [Op.gte]: from },
-          ...to && { [Op.lte]: to }
-        }
-      } else {
-        convertedFilters[key] = {
-          [Op.iRegexp] : filters[key]
-        } 
-      }
+      const isDateFilter = currentFilter.from || currentFilter.to
+      convertedFilters[key] = isDateFilter ? 
+        this.setDateFilter(currentFilter) : this.setDefaultFilter(currentFilter)
     })
     return convertedFilters
   }
