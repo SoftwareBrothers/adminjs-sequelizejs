@@ -65,35 +65,29 @@ describe('Resource', function () {
   })
 
   describe('#count', function () {
-    beforeEach(async function () {
-      this.paramsOne = {
-        firstName: 'john',
-        lastName: 'doe',
-        email: 'john.doe@softwarebrothers.co',
-        createdAt: '2019-01-05',
-      }
-      this.paramsTwo = {
-        firstName: 'andrew',
-        lastName: 'doe',
-        email: 'john.doe@softwarebrothers.co',
-        createdAt: '2019-01-09',
-      }
-    })
-
     it('returns 0 when there are none elements', async function () {
-      const count = await this.resource.count()
+      const count = await this.resource.count({})
       expect(count).to.equal(0)
     })
 
     it('returns given count without filters', async function () {
       await this.resource.create(this.params)
-      const filters = {}
-      expect(await this.resource.count(filters)).to.equal(1)
+      expect(await this.resource.count({})).to.equal(1)
     })
 
     it('returns given count for given filters', async function () {
-      await this.resource.create(this.paramsOne)
-      await this.resource.create(this.paramsTwo)
+      await this.resource.create({
+        firstName: 'john',
+        lastName: 'doe',
+        email: 'john.doe@softwarebrothers.co',
+        createdAt: '2019-01-05',
+      })
+      await this.resource.create({
+        firstName: 'andrew',
+        lastName: 'golota',
+        email: 'andrew.golota@softwarebrothers.co',
+        createdAt: '2019-01-09',
+      })
       const filters = { createdAt: { to: '2019-01-25', from: '2019-01-09' } }
       expect(await this.resource.count(filters)).to.equal(1)
     })
@@ -101,14 +95,11 @@ describe('Resource', function () {
 
   describe('#convertedFilters', function () {
     it('returns empty object if no filters', async function () {
-      const filters = {}
-      expect(await this.resource.convertedFilters(filters)).to.deep.equal({})
+      expect(await this.resource.convertedFilters({})).to.deep.equal({})
     })
 
     it('returns converted filters, if provided', async function () {
-      const filters = { email: 'example' }
-      const expectedResult = { email: { [Op.iRegexp]: 'example' } }
-      expect(await this.resource.convertedFilters(filters)).to.deep.equal(expectedResult)
+      expect(await this.resource.convertedFilters({ email: 'example' })).to.deep.equal({ email: { [Op.iRegexp]: 'example' } })
     })
   })
 

@@ -1,4 +1,5 @@
 /* eslint class-methods-use-this: 0 */
+/* eslint-disable no-param-reassign */
 
 const Sequelize = require('sequelize')
 
@@ -54,8 +55,7 @@ class Resource extends BaseResource {
     return this.SequelizeModel.count(({ where: this.convertedFilters(filters) }))
   }
 
-  getDateFilter(filter) {
-    const { from, to } = filter
+  getDateFilter({ from, to }) {
     return {
       ...from && { [Op.gte]: from },
       ...to && { [Op.lte]: to },
@@ -68,13 +68,15 @@ class Resource extends BaseResource {
     }
   }
 
-  convertedFilters(filters) {
-    if (!filters) return {}
+  convertedFilters(filters = {}) {
     return Object.keys(filters).reduce((obj, key) => {
       const currentFilter = filters[key]
       const isDateFilter = currentFilter.from || currentFilter.to
-      obj[key] = isDateFilter // eslint-disable-line no-param-reassign
-        ? this.getDateFilter(currentFilter) : this.getDefaultFilter(currentFilter)
+      if (isDateFilter) {
+        obj[key] = this.getDateFilter(currentFilter)
+      } else {
+        obj[key] = this.getDefaultFilter(currentFilter)
+      }
       return obj
     }, {})
   }
