@@ -2,6 +2,7 @@
 /* eslint-disable no-param-reassign */
 
 const Sequelize = require('sequelize')
+const escape = require('escape-regexp')
 
 const { Op } = Sequelize
 const {
@@ -64,7 +65,7 @@ class Resource extends BaseResource {
 
   getDefaultFilter(filter) {
     return {
-      [Op.iRegexp]: filter,
+      [Op.iRegexp]: escape(filter),
     }
   }
 
