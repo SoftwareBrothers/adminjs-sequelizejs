@@ -101,6 +101,10 @@ describe('Resource', function () {
     it('returns converted filters, if provided', async function () {
       expect(await Resource.convertedFilters({ email: 'example' })).to.deep.equal({ email: { [Op.iRegexp]: 'example' } })
     })
+
+    it('escapes special chars to be used in regex', async function () {
+      expect(await Resource.convertedFilters({ content: '+$' })).to.deep.equal({ content: { [Op.iRegexp]: '\\+\\$' } })
+    })
   })
 
   describe('#create', function () {
