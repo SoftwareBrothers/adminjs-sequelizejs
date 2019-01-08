@@ -95,11 +95,11 @@ describe('Resource', function () {
 
   describe('#convertedFilters', function () {
     it('returns empty object if no filters', async function () {
-      expect(await this.resource.convertedFilters({})).to.deep.equal({})
+      expect(await Resource.convertedFilters({})).to.deep.equal({})
     })
 
     it('returns converted filters, if provided', async function () {
-      expect(await this.resource.convertedFilters({ email: 'example' })).to.deep.equal({ email: { [Op.iRegexp]: 'example' } })
+      expect(await Resource.convertedFilters({ email: 'example' })).to.deep.equal({ email: { [Op.iRegexp]: 'example' } })
     })
   })
 

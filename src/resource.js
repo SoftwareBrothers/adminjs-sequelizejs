@@ -1,4 +1,3 @@
-/* eslint class-methods-use-this: 0 */
 /* eslint-disable no-param-reassign */
 
 const Sequelize = require('sequelize')
@@ -53,30 +52,30 @@ class Resource extends BaseResource {
   }
 
   async count(filters) {
-    return this.SequelizeModel.count(({ where: this.convertedFilters(filters) }))
+    return this.SequelizeModel.count(({ where: Resource.convertedFilters(filters) }))
   }
 
-  getDateFilter({ from, to }) {
+  static getDateFilter({ from, to }) {
     return {
       ...from && { [Op.gte]: from },
       ...to && { [Op.lte]: to },
     }
   }
 
-  getDefaultFilter(filter) {
+  static getDefaultFilter(filter) {
     return {
       [Op.iRegexp]: escape(filter),
     }
   }
 
-  convertedFilters(filters = {}) {
+  static convertedFilters(filters = {}) {
     return Object.keys(filters).reduce((obj, key) => {
       const currentFilter = filters[key]
       const isDateFilter = currentFilter.from || currentFilter.to
       if (isDateFilter) {
-        obj[key] = this.getDateFilter(currentFilter)
+        obj[key] = Resource.getDateFilter(currentFilter)
       } else {
-        obj[key] = this.getDefaultFilter(currentFilter)
+        obj[key] = Resource.getDefaultFilter(currentFilter)
       }
       return obj
     }, {})
@@ -86,7 +85,7 @@ class Resource extends BaseResource {
     const { direction, sortBy } = sort
     const sequelizeObjects = await this.SequelizeModel
       .findAll({
-        where: this.convertedFilters(filters),
+        where: Resource.convertedFilters(filters),
         limit,
         offset,
         order: [[sortBy, direction.toUpperCase()]],
