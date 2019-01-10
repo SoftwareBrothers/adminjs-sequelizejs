@@ -1,9 +1,6 @@
 /* eslint-disable no-param-reassign */
 
 const Sequelize = require('sequelize')
-const escape = require('escape-regexp')
-
-const { Op } = Sequelize
 const {
   BaseResource,
   BaseRecord,
@@ -11,6 +8,7 @@ const {
 } = require('admin-bro')
 
 const Property = require('./property')
+const Filters = require('./utils/filters')
 
 const SEQUELIZE_VALIDATION_ERROR = 'SequelizeValidationError'
 
@@ -52,40 +50,14 @@ class Resource extends BaseResource {
   }
 
   async count(filters) {
-    return this.SequelizeModel.count(({ where: Resource.convertedFilters(filters) }))
-  }
-
-  static getDateFilter({ from, to }) {
-    return {
-      ...from && { [Op.gte]: from },
-      ...to && { [Op.lte]: to },
-    }
-  }
-
-  static getDefaultFilter(filter) {
-    return {
-      [Op.iRegexp]: escape(filter),
-    }
-  }
-
-  static convertedFilters(filters = {}) {
-    return Object.keys(filters).reduce((obj, key) => {
-      const currentFilter = filters[key]
-      const isDateFilter = currentFilter.from || currentFilter.to
-      if (isDateFilter) {
-        obj[key] = Resource.getDateFilter(currentFilter)
-      } else {
-        obj[key] = Resource.getDefaultFilter(currentFilter)
-      }
-      return obj
-    }, {})
+    return this.SequelizeModel.count(({ where: Filters.convertedFilters(filters) }))
   }
 
   async find(filters = {}, { limit = 20, offset = 0, sort = {} }) {
     const { direction, sortBy } = sort
     const sequelizeObjects = await this.SequelizeModel
       .findAll({
-        where: Resource.convertedFilters(filters),
+        where: Filters.convertedFilters(filters),
         limit,
         offset,
         order: [[sortBy, direction.toUpperCase()]],

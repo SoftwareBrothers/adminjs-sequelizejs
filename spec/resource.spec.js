@@ -1,6 +1,7 @@
 const { ValidationError } = require('admin-bro')
 const Sequelize = require('sequelize')
 const Resource = require('../src/resource')
+const Filters = require('../src/utils/filters')
 const Property = require('../src/property')
 const config = require('../config/config')[process.env.NODE_ENV]
 const db = require('../models/index.js')
@@ -95,15 +96,15 @@ describe('Resource', function () {
 
   describe('#convertedFilters', function () {
     it('returns empty object if no filters', async function () {
-      expect(await Resource.convertedFilters({})).to.deep.equal({})
+      expect(await Filters.convertedFilters({})).to.deep.equal({})
     })
 
     it('returns converted filters, if provided', async function () {
-      expect(await Resource.convertedFilters({ email: 'example' })).to.deep.equal({ email: { [Op.iRegexp]: 'example' } })
+      expect(await Filters.convertedFilters({ email: 'example' })).to.deep.equal({ email: { [Op.iRegexp]: 'example' } })
     })
 
     it('escapes special chars to be used in regex', async function () {
-      expect(await Resource.convertedFilters({ content: '+$' })).to.deep.equal({ content: { [Op.iRegexp]: '\\+\\$' } })
+      expect(await Filters.convertedFilters({ content: '+$' })).to.deep.equal({ content: { [Op.iRegexp]: '\\+\\$' } })
     })
   })
 
