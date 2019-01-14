@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 const Sequelize = require('sequelize')
 const {
   BaseResource,
@@ -6,6 +8,7 @@ const {
 } = require('admin-bro')
 
 const Property = require('./property')
+const Filters = require('./utils/filters')
 
 const SEQUELIZE_VALIDATION_ERROR = 'SequelizeValidationError'
 
@@ -46,14 +49,19 @@ class Resource extends BaseResource {
     return new Property(this.SequelizeModel.attributes[path])
   }
 
-  async count() {
-    return this.SequelizeModel.count()
+  async count(filters) {
+    return this.SequelizeModel.count(({ where: Filters.convertedFilters(filters) }))
   }
 
-  async find(query, { limit = 20, offset = 0, sort = {} }) {
+  async find(filters = {}, { limit = 20, offset = 0, sort = {} }) {
     const { direction, sortBy } = sort
     const sequelizeObjects = await this.SequelizeModel
-      .findAll({ limit, offset, order: [[sortBy, direction.toUpperCase()]] })
+      .findAll({
+        where: Filters.convertedFilters(filters),
+        limit,
+        offset,
+        order: [[sortBy, direction.toUpperCase()]],
+      })
     return sequelizeObjects.map(sequelizeObject => new BaseRecord(sequelizeObject.toJSON(), this))
   }
 
