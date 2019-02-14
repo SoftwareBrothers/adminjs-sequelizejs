@@ -2,7 +2,7 @@
  * @module admin-bro-sequelizejs
  *
  * @description
- * A sequelize database adapter for AdminBro.
+ * A Sequelize database adapter for AdminBro.
  */
 
 /**
