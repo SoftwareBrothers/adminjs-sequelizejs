@@ -67,8 +67,14 @@ class Resource extends BaseResource {
   }
 
   async findOne(id) {
-    const sequelizeObject = await this.SequelizeModel.findByPk(id)
+    const sequelizeObject = await this.findById(id)
     return new BaseRecord(sequelizeObject.toJSON(), this)
+  }
+
+  async findById(id) {
+    // versions of Sequelize before 5 had findById method - after that there was findByPk
+    const method = this.SequelizeModel.findByPk ? 'findByPk' : 'findById'
+    return this.SequelizeModel[method](id)
   }
 
   async create(params) {
@@ -88,7 +94,7 @@ class Resource extends BaseResource {
       await this.SequelizeModel.update(params, {
         where: { id },
       })
-      const record = await this.SequelizeModel.findByPk(id)
+      const record = await this.findById(id)
       return record.toJSON()
     } catch (error) {
       if (error.name === SEQUELIZE_VALIDATION_ERROR) {
