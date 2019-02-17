@@ -24,6 +24,7 @@ class Resource extends BaseResource {
 
   databaseName() {
     return this.SequelizeModel.sequelize.options.database
+      || this.SequelizeModel.sequelize.options.host
   }
 
   databaseType() {
