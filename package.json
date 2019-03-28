@@ -1,6 +1,6 @@
 {
   "name": "admin-bro-sequelizejs",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "description": "Sequelize adapter for AdminBro",
   "main": "index.js",
   "scripts": {
