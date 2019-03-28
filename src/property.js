@@ -1,28 +1,27 @@
-const Sequelize = require('sequelize')
 const { BaseProperty } = require('admin-bro')
 
 const TYPES_MAPPING = [
-  [Sequelize.STRING, 'string'],
-  [Sequelize.TEXT, 'string'],
-  [Sequelize.INTEGER, 'number'],
-  [Sequelize.BIGINT, 'number'],
-  [Sequelize.FLOAT, 'float'],
-  [Sequelize.REAL, 'float'],
-  [Sequelize.DOUBLE, 'float'],
-  [Sequelize.DECIMAL, 'float'],
-  [Sequelize.DATE, 'datetime'],
-  [Sequelize.DATEONLY, 'date'],
-  [Sequelize.ENUM, 'string'],
-  [Sequelize.ARRAY, 'array'],
-  [Sequelize.JSON, 'object'],
-  [Sequelize.JSONB, 'object'],
-  [Sequelize.BLOB, 'string'],
-  [Sequelize.UUID, 'string'],
-  [Sequelize.CIDR, 'string'],
-  [Sequelize.INET, 'string'],
-  [Sequelize.MACADDR, 'string'],
-  [Sequelize.RANGE, 'string'],
-  [Sequelize.GEOMETRY, 'string'],
+  ['STRING', 'string'],
+  ['TEXT', 'string'],
+  ['INTEGER', 'number'],
+  ['BIGINT', 'number'],
+  ['FLOAT', 'float'],
+  ['REAL', 'float'],
+  ['DOUBLE', 'float'],
+  ['DECIMAL', 'float'],
+  ['DATE', 'datetime'],
+  ['DATEONLY', 'date'],
+  ['ENUM', 'string'],
+  ['ARRAY', 'array'],
+  ['JSON', 'object'],
+  ['JSONB', 'object'],
+  ['BLOB', 'string'],
+  ['UUID', 'string'],
+  ['CIDR', 'string'],
+  ['INET', 'string'],
+  ['MACADDR', 'string'],
+  ['RANGE', 'string'],
+  ['GEOMETRY', 'string'],
 ]
 
 class Property extends BaseProperty {
@@ -48,8 +47,19 @@ class Property extends BaseProperty {
     return this.sequelizePath.primaryKey
   }
 
+  reference() {
+    return this.sequelizePath.references && this.sequelizePath.references.model
+  }
+
   type() {
-    const key = TYPES_MAPPING.find(element => this.sequelizePath.type instanceof element[0])
+    const key = TYPES_MAPPING.find(element => (
+      this.sequelizePath.type.constructor.name === element[0]
+    ))
+
+    if (this.reference()) {
+      return 'reference'
+    }
+
     if (!key) {
       console.warn(`Unhandled type: ${this.sequelizePath.type}`)
     }

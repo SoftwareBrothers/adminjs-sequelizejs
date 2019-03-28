@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 
-const Sequelize = require('sequelize')
 const {
   BaseResource,
   BaseRecord,
@@ -8,13 +7,13 @@ const {
 } = require('admin-bro')
 
 const Property = require('./property')
-const Filters = require('./utils/filters')
+const convertFilter = require('./utils/convert-filter')
 
 const SEQUELIZE_VALIDATION_ERROR = 'SequelizeValidationError'
 
 class Resource extends BaseResource {
   static isAdapterFor(rawResource) {
-    return rawResource.prototype instanceof Sequelize.Model
+    return rawResource.sequelize && rawResource.sequelize.constructor.name === 'Sequelize'
   }
 
   constructor(SequelizeModel) {
@@ -36,9 +35,8 @@ class Resource extends BaseResource {
   }
 
   id() {
-    return this.SequelizeModel.tableName.toLowerCase()
+    return this.SequelizeModel.tableName
   }
-
 
   properties() {
     return Object.keys(this.SequelizeModel.attributes).map(key => (
@@ -50,18 +48,41 @@ class Resource extends BaseResource {
     return new Property(this.SequelizeModel.attributes[path])
   }
 
-  async count(filters) {
-    return this.SequelizeModel.count(({ where: Filters.convertedFilters(filters) }))
+  async count(filter) {
+    return this.SequelizeModel.count(({
+      where: convertFilter(filter),
+    }))
   }
 
-  async find(filters = {}, { limit = 20, offset = 0, sort = {} }) {
+  async populate(baseRecords, property) {
+    const ids = baseRecords.map(baseRecord => (
+      baseRecord.param(property.name())
+    ))
+    const records = await this.SequelizeModel.findAll({ where: { id: ids } })
+    const recordsHash = records.reduce((memo, record) => {
+      memo[record.id] = record
+      return memo
+    }, {})
+    baseRecords.forEach((baseRecord) => {
+      const id = baseRecord.param(property.name())
+      if (recordsHash[id]) {
+        const referenceRecord = new BaseRecord(
+          recordsHash[id].toJSON(), this,
+        )
+        baseRecord.populated[property.name()] = referenceRecord
+      }
+    })
+    return true
+  }
+
+  async find(filter, { limit = 20, offset = 0, sort = {} }) {
     const { direction, sortBy } = sort
     const sequelizeObjects = await this.SequelizeModel
       .findAll({
-        where: Filters.convertedFilters(filters),
+        where: convertFilter(filter),
         limit,
         offset,
-        order: [[sortBy, direction.toUpperCase()]],
+        order: [[sortBy, (direction || 'asc').toUpperCase()]],
       })
     return sequelizeObjects.map(sequelizeObject => new BaseRecord(sequelizeObject.toJSON(), this))
   }
