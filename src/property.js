@@ -51,6 +51,12 @@ class Property extends BaseProperty {
     return this.sequelizePath.references && this.sequelizePath.references.model
   }
 
+  availableValues() {
+    return this.sequelizePath.values && this.sequelizePath.values.length
+      ? this.sequelizePath.values
+      : null
+  }
+
   type() {
     const key = TYPES_MAPPING.find(element => (
       this.sequelizePath.type.constructor.name === element[0]

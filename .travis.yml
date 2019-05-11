@@ -2,6 +2,7 @@ language: node_js
 services:
 - postgresql
 before_script:
+- npm install -g test-all-versions
 - npm run sequelize db:create
 - npm run sequelize db:migrate
 env:
@@ -10,7 +11,7 @@ node_js:
 - '8'
 script:
 - npm run lint
-- npm test
+- tav
 deploy:
   provider: npm
   email: wojciech.g.krysiak@gmail.com

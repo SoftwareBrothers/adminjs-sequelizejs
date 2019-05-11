@@ -21,6 +21,13 @@ class Resource extends BaseResource {
     this.SequelizeModel = SequelizeModel
   }
 
+  rawAttributes() {
+    // different sequelize versions stores attributes in different places
+    // .rawAttributes => sequelize ^5.0.0
+    // .attributes => sequelize ^4.0.0
+    return this.SequelizeModel.attributes || this.SequelizeModel.rawAttributes
+  }
+
   databaseName() {
     return this.SequelizeModel.sequelize.options.database
       || this.SequelizeModel.sequelize.options.host
@@ -39,13 +46,13 @@ class Resource extends BaseResource {
   }
 
   properties() {
-    return Object.keys(this.SequelizeModel.attributes).map(key => (
-      new Property(this.SequelizeModel.attributes[key])
+    return Object.keys(this.rawAttributes()).map(key => (
+      new Property(this.rawAttributes()[key])
     ))
   }
 
   property(path) {
-    return new Property(this.SequelizeModel.attributes[path])
+    return new Property(this.rawAttributes()[path])
   }
 
   async count(filter) {

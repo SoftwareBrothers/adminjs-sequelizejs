@@ -1,0 +1,8 @@
+sequelize-5:
+  name: sequelize
+  versions: 5.8.5
+  commands: 'yarn test'
+sequelize-4:
+  name: sequelize
+  versions: 4.42.0
+  commands: 'yarn test'

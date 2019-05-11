@@ -50,7 +50,7 @@ describe('Resource', function () {
 
   describe('#properties', function () {
     it('returns all properties', function () {
-      const { length } = Object.keys(this.SequelizeModel.attributes)
+      const length = 7 // there are 7 properties in the User model (4 regular + __v and _id)
       expect(this.resource.properties()).to.have.lengthOf(length)
     })
   })
