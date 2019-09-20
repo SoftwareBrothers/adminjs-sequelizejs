@@ -22,6 +22,7 @@ const TYPES_MAPPING = [
   ['MACADDR', 'string'],
   ['RANGE', 'string'],
   ['GEOMETRY', 'string'],
+  ['BOOLEAN', 'boolean'],
 ]
 
 class Property extends BaseProperty {
