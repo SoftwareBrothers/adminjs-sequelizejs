@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Started from version 0.2.5
 
+## [0.2.6] - 2019-09-20
+
+### Added
+
+* Boolean support [#4]
+
 ## [0.2.5] - 2019-09-20
 
 ### Fixed
