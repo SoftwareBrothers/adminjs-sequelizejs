@@ -16,7 +16,7 @@
   "author": "Wojciech Krysiak",
   "license": "MIT",
   "peerDependencies": {
-    "admin-bro": ">=0.7.0",
+    "admin-bro": ">=1.1.0",
     "sequelize": ">=4"
   },
   "devDependencies": {
