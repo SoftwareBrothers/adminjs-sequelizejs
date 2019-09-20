@@ -86,7 +86,7 @@ describe('Resource', function () {
         createdAt: '2019-01-09',
       })
       const filter = new Filter({
-        'createdAt~~to': '2019-01-25', 'createdAt~~from': '2019-01-09'
+        'createdAt~~to': '2019-01-25', 'createdAt~~from': '2019-01-09',
       }, this.resource)
       expect(await this.resource.count(filter)).to.equal(1)
     })
