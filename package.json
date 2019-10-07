@@ -1,42 +1,31 @@
 {
-  "name": "admin-bro-sequelizejs",
-  "version": "0.2.6",
-  "description": "Sequelize adapter for AdminBro",
-  "main": "index.js",
+  "name": "admin-bro-typeorm",
+  "version": "0.0.1",
+  "description": "TypeORM adapter for AdminBro",
+  "main": "src/index.ts",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha spec/index.js",
-    "cover": "NODE_ENV=test ./node_modules/nyc/bin/nyc.js --reporter=html -x=spec -x=coverage  --all=true npm test",
-    "sequelize": "./node_modules/.bin/sequelize",
-    "lint": "./node_modules/eslint/bin/eslint.js './spec/**/*.js' './src/**/*.js'"
+    "build": "tsc",
+    "watch": "tsc -w"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SoftwareBrothers/admin-bro-sequelizejs.git"
+    "url": "git+https://github.com/Arteha/admin-bro-typeorm.git"
   },
-  "author": "Wojciech Krysiak",
+  "author": "Artem Zabolotnyi <1arteha1@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
     "admin-bro": ">=1.1.0",
     "sequelize": ">=4"
   },
   "devDependencies": {
-    "admin-bro": "^1.1.4",
-    "chai": "^4.2.0",
-    "eslint": "^5.10.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "factory-girl": "^5.0.4",
-    "lodash": "^4.17.11",
-    "mocha": "^5.2.0",
-    "mongoose": "^5.3.15",
-    "nyc": "^12.0.2",
+    "@types/node": "12.0.10",
     "pg": "^7.7.1",
     "sequelize": "^4.42.0",
-    "sequelize-cli": "^5.4.0",
-    "sinon": "^7.1.1",
-    "sinon-chai": "^3.3.0"
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.3"
   },
   "dependencies": {
+    "admin-bro": "^1.1.4",
     "escape-regexp": "0.0.1"
   }
 }
