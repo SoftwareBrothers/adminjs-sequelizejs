@@ -15,17 +15,15 @@
   "license": "MIT",
   "peerDependencies": {
     "admin-bro": ">=1.1.0",
-    "sequelize": ">=4"
+    "typeorm": ">=0.1.0"
   },
   "devDependencies": {
     "@types/node": "12.0.10",
-    "pg": "^7.7.1",
-    "sequelize": "^4.42.0",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3"
   },
   "dependencies": {
-    "admin-bro": "^1.1.4",
-    "escape-regexp": "0.0.1"
+    "admin-bro": "^1.1.0",
+    "typeorm": "^0.2.1"
   }
 }

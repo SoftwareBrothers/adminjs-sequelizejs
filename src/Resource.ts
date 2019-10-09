@@ -1,5 +1,7 @@
 import {Property} from "./Property";
-const convertFilter = require("./utils/convertFilter");
+import {BaseEntity, In} from "typeorm";
+import {convertFilter} from "./utils/convertFilter";
+
 const {
     BaseResource,
     BaseRecord,
@@ -8,80 +10,85 @@ const {
 
 export const SEQUELIZE_VALIDATION_ERROR = "SequelizeValidationError";
 
+function logModel(model: typeof BaseEntity)
+{
+    return model;
+}
+
 export class Resource extends BaseResource
 {
-    constructor(SequelizeModel)
+    private model: typeof BaseEntity;
+    private propsObject: Record<string, Property> = {};
+    private propsArray: Array<Property> = [];
+
+    constructor(model: typeof BaseEntity)
     {
-        super(SequelizeModel);
-        this.SequelizeModel = SequelizeModel;
+        super();
+
+        this.model = model;
+        this.prepareProps();
     }
 
-    public rawAttributes()
+    public databaseName(): string
     {
-        // different sequelize versions stores attributes in different places
-        // .rawAttributes => sequelize ^5.0.0
-        // .attributes => sequelize ^4.0.0
-        return this.SequelizeModel.attributes || this.SequelizeModel.rawAttributes;
+        return (this.model as any).usedConnection.options.type;
     }
 
-    public databaseName()
+    public databaseType(): string
     {
-        return this.SequelizeModel.sequelize.options.database
-            || this.SequelizeModel.sequelize.options.host;
+        return (this.model as any).usedConnection.options.type;
     }
 
-    public databaseType()
+    public name(): string
     {
-        return this.SequelizeModel.sequelize.options.dialect;
-    }
-
-    public name()
-    {
-        return this.SequelizeModel.tableName;
+        // console.log("Resource.name()", this.model.getRepository().metadata.tableName);
+        return this.model.getRepository().metadata.tableName;
     }
 
     public id()
     {
-        return this.SequelizeModel.tableName;
+        return this.model.name;
     }
 
     public properties()
     {
-        return Object.keys(this.rawAttributes()).map(key => (
-            new Property(this.rawAttributes()[key])
-        ));
+        return [...this.propsArray];
     }
 
     public property(path)
     {
-        return new Property(this.rawAttributes()[path]);
+        // console.log(this.model.name, ".property()", path);
+        return this.propsObject[path];
     }
 
     public async count(filter)
     {
-        return this.SequelizeModel.count(({
+        return this.model.count(({
             where: convertFilter(filter),
         }));
     }
 
-    public async populate(baseRecords, property)
+    public async populate(baseRecords, property: Property)
     {
-        const ids = baseRecords.map(baseRecord => (
-            baseRecord.param(property.name())
-        ));
-        const records = await this.SequelizeModel.findAll({where: {id: ids}});
+        // TODO: populate
+        const ids: Array<any> = baseRecords.map(baseRecord =>
+        {
+            const propertyName = property.name();
+            return baseRecord.param(propertyName);
+        });
+        const records = await this.model.find({where: {id: In(ids)}});
         const recordsHash = records.reduce((memo, record) =>
         {
-            memo[record.id] = record;
+            memo[(record as any).id] = record;
             return memo;
         }, {});
         baseRecords.forEach((baseRecord) =>
         {
-            const id = baseRecord.param(property.name());
-            if(recordsHash[id])
+            const id = baseRecord.params.id;
+            if (recordsHash[id])
             {
                 const referenceRecord = new BaseRecord(
-                    recordsHash[id].toJSON(), this,
+                    recordsHash[id], this,
                 );
                 baseRecord.populated[property.name()] = referenceRecord;
             }
@@ -91,40 +98,40 @@ export class Resource extends BaseResource
 
     public async find(filter, {limit = 20, offset = 0, sort = {}})
     {
+        console.log("find:");
         const {direction, sortBy} = sort as any;
-        const sequelizeObjects = await this.SequelizeModel
-            .findAll({
-                where: convertFilter(filter),
-                limit,
-                offset,
-                order: [[sortBy, (direction || "asc").toUpperCase()]],
-            });
-        return sequelizeObjects.map(sequelizeObject => new BaseRecord(sequelizeObject.toJSON(), this));
+        const instances = await this.model.find({
+            where: convertFilter(filter),
+            take: limit,
+            skip: offset,
+            order: {
+                [sortBy]: (direction || "asc").toUpperCase()
+            }
+        });
+        return instances.map(instance => new BaseRecord(instance, this));
     }
 
     public async findOne(id)
     {
-        const sequelizeObject = await this.findById(id);
-        return new BaseRecord(sequelizeObject.toJSON(), this);
+        const sequelizeObject = await this.model.findOne(id);
+        return new BaseRecord(sequelizeObject, this);
     }
 
     public async findById(id)
     {
-        // versions of Sequelize before 5 had findById method - after that there was findByPk
-        const method = this.SequelizeModel.findByPk ? "findByPk" : "findById";
-        return this.SequelizeModel[method](id);
+        return await this.model.findOne(id);
     }
 
-    public async create(params)
+    public async create(params: any)
     {
         try
         {
-            const record = await this.SequelizeModel.create(params);
-            return record.toJSON();
-        }
-        catch(error)
+            const instance = await this.model.create(params);
+            await instance.save();
+            return instance;
+        } catch(error)
         {
-            if(error.name === SEQUELIZE_VALIDATION_ERROR)
+            if (error.name === SEQUELIZE_VALIDATION_ERROR)
             {
                 throw this.createValidationError(error);
             }
@@ -132,19 +139,23 @@ export class Resource extends BaseResource
         }
     }
 
-    public async update(id, params)
+    public async update(pk, params: any = {})
     {
         try
         {
-            await this.SequelizeModel.update(params, {
-                where: {id},
-            });
-            const record = await this.findById(id);
-            return record.toJSON();
-        }
-        catch(error)
+            const instance = await this.model.findOne(pk);
+            if (instance)
+            {
+                for (const p in params)
+                    instance[p] = params[p];
+
+                await instance.save();
+                // const record = await this.findByPk(pk);
+                return instance;
+            }
+        } catch(error)
         {
-            if(error.name === SEQUELIZE_VALIDATION_ERROR)
+            if (error.name === SEQUELIZE_VALIDATION_ERROR)
             {
                 throw this.createValidationError(error);
             }
@@ -152,9 +163,13 @@ export class Resource extends BaseResource
         }
     }
 
-    public async delete(id)
+    public async delete(pk)
     {
-        return this.SequelizeModel.destroy({where: {id}});
+        console.log("delete", pk);
+        await this.model.delete(pk);
+        /*const instance = await this.model.findOne(pk);
+        if (instance)
+            return instance.remove();*/
     }
 
     public createValidationError(originalError)
@@ -168,8 +183,20 @@ export class Resource extends BaseResource
         return new ValidationError(`${this.name()} validation failed`, errors);
     }
 
+    private prepareProps()
+    {
+        // const columns: Array<string | DataTypeAbstract | DefineAttributeColumnOptions> = [];
+        const columns = this.model.getRepository().metadata.columns;
+        for (const col of columns)
+        {
+            const property = new Property(col, this.id(), this.model);
+            this.propsObject[col.propertyName] = property;
+            this.propsArray.push(property);
+        }
+    }
+
     public static isAdapterFor(rawResource)
     {
-        return rawResource.sequelize && rawResource.sequelize.constructor.name === "Sequelize";
+        return true;
     }
 }

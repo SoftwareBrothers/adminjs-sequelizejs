@@ -1,9 +1,11 @@
-const {BaseDatabase} = require("admin-bro");
-const Resource = require("./Resource");
+import { Resource } from "./Resource";
+
+const { BaseDatabase } = require("admin-bro");
 
 export class Database extends BaseDatabase
 {
     public sequelize: any;
+
     public constructor(database)
     {
         super();
@@ -13,15 +15,12 @@ export class Database extends BaseDatabase
     public resources()
     {
         return Object.keys(this.sequelize.models).map(key => (
-            new Resource(this.sequelize.models[key])
+            new Resource(this.sequelize.models[ key ])
         ));
     }
 
     public static isAdapterFor(database)
     {
-        // TODO: isAdapterFor TypeORM
-        return (database.sequelize
-            && database.sequelize.constructor.name === "Sequelize")
-            || database.constructor.name === "Sequelize";
+        return true;
     }
 }
