@@ -1,4 +1,3 @@
-const escape = require('escape-regexp')
 const { Op } = require('sequelize')
 
 const convertFilter = (filter) => {
@@ -10,7 +9,7 @@ const convertFilter = (filter) => {
     switch (property.type()) {
     case 'string':
       return {
-        [property.name()]: { [Op.like]: `%${escape(value)}%` },
+        [property.name()]: { [Op.like]: `%${value}%` },
         ...memo,
       }
     case 'number':
