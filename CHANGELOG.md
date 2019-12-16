@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Started from version 0.2.5
 
+## [0.2.7] - 2019-12-16
+
+### Added
+
+* remove empty string from update/create params when field is reference, float or number
+
 ## [0.2.6] - 2019-09-20
 
 ### Added
