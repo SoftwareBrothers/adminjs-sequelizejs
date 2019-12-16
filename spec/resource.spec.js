@@ -130,6 +130,24 @@ describe('Resource', function () {
         }
       })
     })
+
+    context('record with empty id field', function () {
+      beforeEach(function () {
+        this.SequelizeModel = db.sequelize.models.Post
+        this.resource = new Resource(this.SequelizeModel)
+      })
+
+      it('creates record without an error', async function () {
+        this.params = {
+          title: 'some title',
+          description: 'doe',
+          publishedAt: '2019-12-10 12:00',
+          userId: '',
+        }
+        this.recordParams = await this.resource.create(this.params)
+        expect(this.recordParams.userId).to.be.null
+      })
+    })
   })
 
   describe('#update', function () {

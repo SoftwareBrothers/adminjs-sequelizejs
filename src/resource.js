@@ -106,8 +106,9 @@ class Resource extends BaseResource {
   }
 
   async create(params) {
+    const parsedParams = this.parseParams(params)
     try {
-      const record = await this.SequelizeModel.create(params)
+      const record = await this.SequelizeModel.create(parsedParams)
       return record.toJSON()
     } catch (error) {
       if (error.name === SEQUELIZE_VALIDATION_ERROR) {
@@ -118,8 +119,9 @@ class Resource extends BaseResource {
   }
 
   async update(id, params) {
+    const parsedParams = this.parseParams(params)
     try {
-      await this.SequelizeModel.update(params, {
+      await this.SequelizeModel.update(parsedParams, {
         where: { id },
       })
       const record = await this.findById(id)
@@ -143,6 +145,29 @@ class Resource extends BaseResource {
       return memo
     }, {})
     return new ValidationError(`${this.name()} validation failed`, errors)
+  }
+
+  /**
+   * Check all params against values they hold. In case of wrong value it corrects it.
+   *
+   * What it does esactly:
+   * - removes keys with empty strings for the `number`, `float` and 'reference' properties.
+   *
+   * @param   {Object}  params  received from AdminBro form
+   *
+   * @return  {Object}          converted params
+   */
+  parseParams(params) {
+    const parasedParams = { ...params }
+    this.properties().forEach((property) => {
+      const value = parasedParams[property.name()]
+      if (['number', 'float', 'reference'].includes(property.type())) {
+        if (value === '') {
+          delete parasedParams[property.name()]
+        }
+      }
+    })
+    return parasedParams
   }
 }
 

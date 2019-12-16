@@ -28,7 +28,7 @@ describe('Database', function () {
   describe('#resources', function () {
     it('fetches all resources when entire db is given', function () {
       const database = new Database(db)
-      expect(database.resources()).to.have.lengthOf(1)
+      expect(database.resources()).to.have.lengthOf(2)
       expect(database.resources()[0]).to.be.an.instanceof(Resource)
     })
 
