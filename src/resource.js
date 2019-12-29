@@ -1,10 +1,7 @@
 /* eslint-disable no-param-reassign */
 
-const {
-  BaseResource,
-  BaseRecord,
-  ValidationError,
-} = require('admin-bro')
+const { BaseResource, BaseRecord, ValidationError } = require('admin-bro')
+const { Op } = require('sequelize')
 
 const Property = require('./property')
 const convertFilter = require('./utils/convert-filter')
@@ -97,6 +94,15 @@ class Resource extends BaseResource {
   async findOne(id) {
     const sequelizeObject = await this.findById(id)
     return new BaseRecord(sequelizeObject.toJSON(), this)
+  }
+
+  async findMany(ids) {
+    const sequelizeObjects = await this.SequelizeModel.findAll({
+      where: {
+        id: { [Op.in]: ids },
+      },
+    })
+    return sequelizeObjects.map(sequelizeObject => new BaseRecord(sequelizeObject.toJSON(), this))
   }
 
   async findById(id) {

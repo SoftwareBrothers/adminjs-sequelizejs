@@ -1,4 +1,4 @@
-const { ValidationError, Filter } = require('admin-bro')
+const { ValidationError, Filter, BaseRecord } = require('admin-bro')
 const Resource = require('../src/resource')
 const Property = require('../src/property')
 const config = require('../config/config')[process.env.NODE_ENV]
@@ -10,12 +10,12 @@ describe('Resource', function () {
     this.resource = new Resource(this.SequelizeModel)
   })
 
-  after(function () {
-    db.sequelize.close()
+  after(async function () {
+    await db.sequelize.close()
   })
 
-  afterEach(function () {
-    this.SequelizeModel.destroy({ where: {} })
+  afterEach(async function () {
+    await this.SequelizeModel.destroy({ where: {} })
   })
 
   describe('.isAdapterFor', function () {
@@ -58,6 +58,17 @@ describe('Resource', function () {
   describe('#property', function () {
     it('returns given property', function () {
       expect(this.resource.property('email')).to.be.an.instanceOf(Property)
+    })
+  })
+
+  describe('#findMany', function () {
+    it('returns array of BaseRecords', async function () {
+      const params = await this.resource.create(this.params)
+
+      const records = await this.resource.findMany([params.id])
+
+      expect(records).to.have.lengthOf(1)
+      expect(records[0]).to.be.instanceOf(BaseRecord)
     })
   })
 
