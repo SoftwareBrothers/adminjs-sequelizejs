@@ -62,7 +62,9 @@ class Resource extends BaseResource {
     const ids = baseRecords.map(baseRecord => (
       baseRecord.param(property.name())
     ))
-    const records = await this.SequelizeModel.findAll({ where: { id: ids } })
+    const records = await this.SequelizeModel.findAll({
+      where: { [this.SequelizeModel.primaryKeyField]: ids },
+    })
     const recordsHash = records.reduce((memo, record) => {
       memo[record.id] = record
       return memo
