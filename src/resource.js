@@ -145,7 +145,11 @@ class Resource extends BaseResource {
   }
 
   async delete(id) {
-    return this.SequelizeModel.destroy({ where: { id } })
+    return this.SequelizeModel.destroy({
+      where: {
+        [this.SequelizeModel.primaryKeyField]: id,
+      },
+    })
   }
 
   createValidationError(originalError) {

@@ -7,11 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Started from version 0.2.5
 
-## [0.3.1] - 2020-02-12
+## [0.3.1-3] - 2020-02-12
 
 ### Fixed
 
-* allow to have not "id" property as a primary key
+* allow to have not "id" property as a primary key [#287]
 
 ## [0.3.0] - 2019-12-29
 
