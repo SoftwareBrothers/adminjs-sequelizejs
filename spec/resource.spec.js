@@ -88,16 +88,14 @@ describe('Resource', function () {
         firstName: 'john',
         lastName: 'doe',
         email: 'john.doe@softwarebrothers.co',
-        createdAt: '2019-01-05',
       })
       await this.resource.create({
         firstName: 'andrew',
         lastName: 'golota',
         email: 'andrew.golota@softwarebrothers.co',
-        createdAt: '2019-01-09',
       })
       const filter = new Filter({
-        'createdAt~~to': '2019-01-25', 'createdAt~~from': '2019-01-09',
+        email: 'andrew.golota@softwarebrothers.co',
       }, this.resource)
       expect(await this.resource.count(filter)).to.equal(1)
     })
