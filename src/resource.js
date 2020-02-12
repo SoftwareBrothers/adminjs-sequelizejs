@@ -101,7 +101,7 @@ class Resource extends BaseResource {
   async findMany(ids) {
     const sequelizeObjects = await this.SequelizeModel.findAll({
       where: {
-        id: { [Op.in]: ids },
+        [this.SequelizeModel.primaryKeyField]: { [Op.in]: ids },
       },
     })
     return sequelizeObjects.map(sequelizeObject => new BaseRecord(sequelizeObject.toJSON(), this))
@@ -130,7 +130,9 @@ class Resource extends BaseResource {
     const parsedParams = this.parseParams(params)
     try {
       await this.SequelizeModel.update(parsedParams, {
-        where: { id },
+        where: {
+          [this.SequelizeModel.primaryKeyField]: id,
+        },
       })
       const record = await this.findById(id)
       return record.toJSON()
@@ -158,7 +160,7 @@ class Resource extends BaseResource {
   /**
    * Check all params against values they hold. In case of wrong value it corrects it.
    *
-   * What it does esactly:
+   * What it does exactly:
    * - removes keys with empty strings for the `number`, `float` and 'reference' properties.
    *
    * @param   {Object}  params  received from AdminBro form
@@ -166,16 +168,19 @@ class Resource extends BaseResource {
    * @return  {Object}          converted params
    */
   parseParams(params) {
-    const parasedParams = { ...params }
+    const parsedParams = { ...params }
     this.properties().forEach((property) => {
-      const value = parasedParams[property.name()]
+      const value = parsedParams[property.name()]
       if (['number', 'float', 'reference'].includes(property.type())) {
         if (value === '') {
-          delete parasedParams[property.name()]
+          delete parsedParams[property.name()]
         }
       }
+      if (!property.isEditable()) {
+        delete parsedParams[property.name()]
+      }
     })
-    return parasedParams
+    return parsedParams
   }
 }
 
