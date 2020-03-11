@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Started from version 0.2.5
 
+## [0.3.4] - 2020-03-11
+
+### Changed
+
+* remove console log for not supporting properties
+
 ## [0.3.1-3] - 2020-02-12
 
 ### Fixed
