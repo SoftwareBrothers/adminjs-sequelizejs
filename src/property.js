@@ -67,9 +67,6 @@ class Property extends BaseProperty {
       return 'reference'
     }
 
-    if (!key) {
-      console.warn(`Unhandled type: ${this.sequelizePath.type}`)
-    }
     const type = key && key[1]
     return type || 'string'
   }
