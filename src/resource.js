@@ -1,10 +1,11 @@
 /* eslint-disable no-param-reassign */
 
-const { BaseResource, BaseRecord, ValidationError } = require('admin-bro')
+const { BaseResource, BaseRecord } = require('admin-bro')
 const { Op } = require('sequelize')
 
 const Property = require('./property')
 const convertFilter = require('./utils/convert-filter')
+const createValidationError = require('./utils/create-validation-error')
 
 const SEQUELIZE_VALIDATION_ERROR = 'SequelizeValidationError'
 
@@ -120,7 +121,7 @@ class Resource extends BaseResource {
       return record.toJSON()
     } catch (error) {
       if (error.name === SEQUELIZE_VALIDATION_ERROR) {
-        throw this.createValidationError(error)
+        throw createValidationError(error)
       }
       throw error
     }
@@ -138,7 +139,7 @@ class Resource extends BaseResource {
       return record.toJSON()
     } catch (error) {
       if (error.name === SEQUELIZE_VALIDATION_ERROR) {
-        throw this.createValidationError(error)
+        throw createValidationError(error)
       }
       throw error
     }
@@ -150,15 +151,6 @@ class Resource extends BaseResource {
         [this.SequelizeModel.primaryKeyField]: id,
       },
     })
-  }
-
-  createValidationError(originalError) {
-    const errors = Object.keys(originalError.errors).reduce((memo, key) => {
-      const { path, message, validatorKey } = originalError.errors[key]
-      memo[path] = { message, kind: validatorKey } // eslint-disable-line no-param-reassign
-      return memo
-    }, {})
-    return new ValidationError(`${this.name()} validation failed`, errors)
   }
 
   /**

@@ -1,6 +1,6 @@
 {
   "name": "admin-bro-sequelizejs",
-  "version": "0.3.4",
+  "version": "0.4.0",
   "description": "Sequelize adapter for AdminBro",
   "main": "index.js",
   "scripts": {
@@ -16,11 +16,11 @@
   "author": "Wojciech Krysiak",
   "license": "MIT",
   "peerDependencies": {
-    "admin-bro": ">=1.1.0",
+    "admin-bro": ">=2.2.0",
     "sequelize": ">=4"
   },
   "devDependencies": {
-    "admin-bro": "^1.1.4",
+    "admin-bro": "^2.2.0",
     "chai": "^4.2.0",
     "eslint": "^5.10.0",
     "eslint-config-airbnb-base": "^13.1.0",
