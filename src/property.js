@@ -32,7 +32,7 @@ class Property extends BaseProperty {
   }
 
   name() {
-    return this.sequelizePath.field
+    return this.sequelizePath.fieldName
   }
 
   isEditable() {
