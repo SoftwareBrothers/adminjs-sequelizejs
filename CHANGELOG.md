@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Started from version 0.2.5
 
+## [0.4.1] - 2020-04-26
+
+### Fixed
+
+* fized property name mapping when options `underscored` is set to `true`
+
+## [0.4.0] - 2020-04-03
+
+### Changed
+
+* hange the errors interface to be alligned with admin-bro 2.2
+
 ## [0.3.4] - 2020-03-11
 
 ### Changed
