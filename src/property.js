@@ -72,7 +72,8 @@ class Property extends BaseProperty {
   }
 
   isRequired() {
-    return !!(this.sequelizePath.validate && this.sequelizePath.validate.notNull)
+    return !(typeof this.sequelizePath.allowNull === 'undefined'
+      || this.sequelizePath.allowNull === true)
   }
 }
 

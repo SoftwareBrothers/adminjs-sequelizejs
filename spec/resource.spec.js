@@ -63,7 +63,7 @@ describe('Resource', function () {
 
   describe('#findMany', function () {
     it('returns array of BaseRecords', async function () {
-      const params = await this.resource.create(this.params)
+      const params = await this.resource.create({ email: 'john.doe@softwarebrothers.co' })
 
       const records = await this.resource.findMany([params.id])
 
@@ -79,7 +79,7 @@ describe('Resource', function () {
     })
 
     it('returns given count without filters', async function () {
-      await this.resource.create(this.params)
+      await this.resource.create({ email: 'john.doe@softwarebrothers.co' })
       expect(await this.resource.count(new Filter({}))).to.equal(1)
     })
 
