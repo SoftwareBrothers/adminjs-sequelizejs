@@ -13,7 +13,7 @@ Started from version 0.2.5
 
 * [#318] isRequired field
 
-## Version 0.4.1 - 2020-04-26
+## Version v0.4.1 - 2020-04-26
 
 ### Fixed
 
