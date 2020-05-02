@@ -57,6 +57,8 @@ jobs:
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
+      - run: yarn run sequelize db:create
+      - run: yarn run sequelize db:migrate
       - name: Lint
         run: yarn lint
       - name: test

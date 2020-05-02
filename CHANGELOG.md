@@ -7,13 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Started from version 0.2.5
 
-## [0.4.2] - 2020-05-02
+## Version v0.4.2b - 2020-05-02
 
 ### Added
 
 * [#318] isRequired field
 
-## [0.4.1] - 2020-04-26
+## Version 0.4.1 - 2020-04-26
 
 ### Fixed
 
