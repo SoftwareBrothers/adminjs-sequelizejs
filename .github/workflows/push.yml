@@ -32,11 +32,10 @@ jobs:
     needs: setup
     env:
       NODE_ENV: test
+      POSTGRES_PASSWORD: postgres
     services:
       postgres:
         image: postgres
-        env:
-          POSTGRES_PASSWORD: postgres
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
