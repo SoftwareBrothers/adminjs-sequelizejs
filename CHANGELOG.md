@@ -7,11 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 Started from version 0.2.5
 
+## [0.4.2] - 2020-05-02
+
+### Added
+
+* [#318] isRequired field
+
 ## [0.4.1] - 2020-04-26
 
 ### Fixed
 
-* fized property name mapping when options `underscored` is set to `true`
+* fixed property name mapping when options `underscored` is set to `true`
 
 ## [0.4.0] - 2020-04-03
 
