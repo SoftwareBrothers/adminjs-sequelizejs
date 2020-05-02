@@ -40,4 +40,16 @@ describe('Property', function () {
       expect(property.availableValues()).to.deep.equal(['male', 'female'])
     })
   })
+
+  describe('isRequired', function () {
+    it('returns true for required fields', function () {
+      const property = new Property(this.rawAttributes.email)
+      expect(property.isRequired()).to.equal(true)
+    })
+
+    it('returns false for not required fields', function () {
+      const property = new Property(this.rawAttributes.gender)
+      expect(property.isRequired()).to.eq(false)
+    })
+  })
 })

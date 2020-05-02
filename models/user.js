@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     gender: DataTypes.ENUM('male', 'female'),
     email: {
       type: DataTypes.STRING,
-      validate: { isEmail: true },
+      validate: { isEmail: true, notNull: true },
     },
   }, {})
   User.associate = function (models) {

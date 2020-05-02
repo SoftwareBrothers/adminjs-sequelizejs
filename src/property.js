@@ -70,6 +70,10 @@ class Property extends BaseProperty {
     const type = key && key[1]
     return type || 'string'
   }
+
+  isRequired() {
+    return !!(this.sequelizePath.validate && this.sequelizePath.validate.notNull)
+  }
 }
 
 module.exports = Property
