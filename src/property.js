@@ -27,12 +27,12 @@ const TYPES_MAPPING = [
 
 class Property extends BaseProperty {
   constructor(sequelizePath) {
-    super({ path: sequelizePath.field })
+    super({ path: sequelizePath.fieldName })
     this.sequelizePath = sequelizePath
   }
 
   name() {
-    return this.sequelizePath.field
+    return this.sequelizePath.fieldName
   }
 
   isEditable() {
