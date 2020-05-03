@@ -58,18 +58,21 @@ jobs:
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn install
-      - run: yarn run sequelize db:create
+      - run: yarn run sequelize db:migrate
         env:
           NODE_ENV: test
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+          POSTGRES_PASSWORD: postgre
           POSTGRES_DATABASE: postgres
           POSTGRES_USER: postgres
-      - run: yarn run sequelize db:migrate
       - name: Lint
         run: yarn lint
       - name: test
         run: yarn test
+        env:
+          NODE_ENV: test
+          POSTGRES_PASSWORD: postgre
+          POSTGRES_DATABASE: postgres
+          POSTGRES_USER: postgres
 
   notify: 
     name: Notify
