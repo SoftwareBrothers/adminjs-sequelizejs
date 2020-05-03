@@ -61,7 +61,7 @@ jobs:
       - run: yarn run sequelize db:migrate
         env:
           NODE_ENV: test
-          POSTGRES_PASSWORD: postgre
+          POSTGRES_PASSWORD: postgres
           POSTGRES_DATABASE: postgres
           POSTGRES_USER: postgres
       - name: Lint
@@ -70,7 +70,7 @@ jobs:
         run: yarn test
         env:
           NODE_ENV: test
-          POSTGRES_PASSWORD: postgre
+          POSTGRES_PASSWORD: postgres
           POSTGRES_DATABASE: postgres
           POSTGRES_USER: postgres
 
