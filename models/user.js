@@ -11,6 +11,12 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: { isEmail: true },
     },
+    name: {
+      type: DataTypes.VIRTUAL,
+      get: function () {
+        return `${this.getDataValue('lastName')}, ${this.getDataValue('firstName')}`.trim()
+      }
+    },
   }, {})
   User.associate = function (models) {
     User.hasMany(models.Post, { foreignKey: 'userId' })

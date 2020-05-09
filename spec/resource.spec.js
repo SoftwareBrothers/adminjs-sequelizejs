@@ -50,7 +50,7 @@ describe('Resource', function () {
 
   describe('#properties', function () {
     it('returns all properties', function () {
-      const length = 7 // there are 7 properties in the User model (4 regular + __v and _id)
+      const length = 8 // there are 8 properties in the User model (4 regular + __v, _id and VIRTUAL name)
       expect(this.resource.properties()).to.have.lengthOf(length)
     })
   })
@@ -69,6 +69,17 @@ describe('Resource', function () {
 
       expect(records).to.have.lengthOf(1)
       expect(records[0]).to.be.instanceOf(BaseRecord)
+    })
+  })
+
+  describe('#find', function () {
+    it('throws error when sortBy is type of VIRTUAL', async function () {
+      const params = await this.resource.create({ email: 'sort.by.error@softwarebrothers.co' })
+      try {
+        const records = await this.resource.find([params.id], {sort: {sortBy: 'name'}})
+      } catch (error) {
+        expect(error.message).to.have.string('Cannot sort on VIRTUAL Datatype')
+      }
     })
   })
 
