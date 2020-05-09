@@ -85,7 +85,10 @@ class Resource extends BaseResource {
   async find(filter, { limit = 20, offset = 0, sort = {} }) {
     const { direction, sortBy } = sort
     if (this.SequelizeModel.fieldRawAttributesMap[sortBy].type instanceof DataTypes.VIRTUAL) {
-      throw new Error(`Cannot sort on VIRTUAL Datatype "${sortBy}" on resource "${this.SequelizeModel.name}"! You can provide a different sort by field to avoid this issue, see: https://adminbro.com/ResourceOptions.html#sort`)
+      throw new Error(
+          `Cannot sort on VIRTUAL Datatype "${sortBy}" on resource "${this.SequelizeModel.name}"!` +
+          ` You can provide a different sort by field to avoid this issue, see: https://adminbro.com/ResourceOptions.html#sort`
+      )
     }
     const sequelizeObjects = await this.SequelizeModel
       .findAll({
