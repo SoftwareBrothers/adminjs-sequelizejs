@@ -19,6 +19,9 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
       },
+      arrayed: {
+        type: Sequelize.ARRAY(Sequelize.STRING),
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

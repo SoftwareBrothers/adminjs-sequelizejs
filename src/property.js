@@ -49,7 +49,7 @@ class Property extends BaseProperty {
   }
 
   reference() {
-    return this.sequelizePath.references && this.sequelizePath.references.model
+    return !this.isArray() && this.sequelizePath.references && this.sequelizePath.references.model
   }
 
   availableValues() {
@@ -58,9 +58,19 @@ class Property extends BaseProperty {
       : null
   }
 
+  isArray() {
+    return this.sequelizePath.type.constructor.name === 'ARRAY'
+  }
+
   type() {
+    let sequelizeType = this.sequelizePath.type
+    
+    if (this.isArray()) {
+      sequelizeType = sequelizeType.type
+    }
+
     const key = TYPES_MAPPING.find(element => (
-      this.sequelizePath.type.constructor.name === element[0]
+      sequelizeType.constructor.name === element[0]
     ))
 
     if (this.reference()) {
@@ -69,6 +79,10 @@ class Property extends BaseProperty {
 
     const type = key && key[1]
     return type || 'string'
+  }
+
+  isSortable() {
+    return this.type() !== 'mixed' && !this.isArray()
   }
 
   isRequired() {

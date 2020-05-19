@@ -37,6 +37,7 @@
     "sinon-chai": "^3.3.0"
   },
   "dependencies": {
-    "escape-regexp": "0.0.1"
+    "escape-regexp": "0.0.1",
+    "flat": "^5.0.0"
   }
 }

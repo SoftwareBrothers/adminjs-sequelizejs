@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: { isEmail: true },
     },
+    arrayed: DataTypes.ARRAY(DataTypes.STRING),
   }, {})
   User.associate = function (models) {
     User.hasMany(models.Post, { foreignKey: 'userId' })
