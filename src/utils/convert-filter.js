@@ -9,6 +9,12 @@ const convertFilter = (filter) => {
     const { property, value } = filterProperty
     switch (property.type()) {
     case 'string':
+      if (property.sequelizePath.values) {
+        return {
+          [property.name()]: { [Op.eq]: `${escape(value)}` },
+          ...memo,
+        }
+      }
       return {
         [property.name()]: { [Op.like]: `%${escape(value)}%` },
         ...memo,

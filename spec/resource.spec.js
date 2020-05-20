@@ -72,6 +72,47 @@ describe('Resource', function () {
     })
   })
 
+  describe('#find with filter', function () {
+    beforeEach(async function () {
+      this.params = {
+        gender: 'male',
+        email: 'john.doe@softwarebrothers.co',
+      }
+      this.record = await this.resource.create(this.params)
+    })
+
+    it('returns 1 BaseRecord when filtering on ENUMS', async function () {
+      const filter = new Filter({
+        gender: 'male',
+      }, this.resource)
+      const records = await this.resource.find(filter, { limit: 20, offset: 0, sort: { direction: 'asc', sortBy: 'id' } })
+
+      expect(records).to.have.lengthOf(1)
+      expect(records[0]).to.be.instanceOf(BaseRecord)
+      expect(records[0].params.gender).to.equal('male')
+    })
+
+    it('returns 0 BaseRecord when filtering on ENUMS', async function () {
+      const filter = new Filter({
+        gender: 'female',
+      }, this.resource)
+      const records = await this.resource.find(filter, { limit: 20, offset: 0, sort: { direction: 'asc', sortBy: 'id' } })
+
+      expect(records).to.have.lengthOf(0)
+    })
+
+    it('returns error when filtering on ENUMS with invalid value', async function () {
+      const filter = new Filter({
+        gender: 'XXX',
+      }, this.resource)
+      try {
+        await this.resource.find(filter, { limit: 20, offset: 0, sort: { direction: 'asc', sortBy: 'id' } })
+      } catch (error) {
+        expect(error).to.be.an.instanceOf(db.sequelize.DatabaseError)
+      }
+    })
+  })
+
   describe('#count', function () {
     it('returns 0 when there are none elements', async function () {
       const count = await this.resource.count(new Filter({}))
