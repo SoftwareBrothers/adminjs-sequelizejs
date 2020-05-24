@@ -1,3 +1,8 @@
+GENDER_CHOICES = {
+  MALE: "male",
+  FEMALE: "female",
+}
+
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Users', {
@@ -14,7 +19,9 @@ module.exports = {
         type: Sequelize.STRING,
       },
       gender: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM({
+          values: Object.values(GENDER_CHOICES),
+        }),
       },
       email: {
         type: Sequelize.STRING,
