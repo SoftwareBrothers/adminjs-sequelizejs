@@ -7,7 +7,8 @@
     "test": "./node_modules/mocha/bin/mocha spec/index.js",
     "cover": "NODE_ENV=test ./node_modules/nyc/bin/nyc.js --reporter=html -x=spec -x=coverage  --all=true npm test",
     "sequelize": "./node_modules/.bin/sequelize",
-    "lint": "./node_modules/eslint/bin/eslint.js './spec/**/*.js' './src/**/*.js'"
+    "lint": "./node_modules/eslint/bin/eslint.js './spec/**/*.js' './src/**/*.js'",
+    "release": "semantic-release"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,11 @@
   "peerDependencies": {
     "admin-bro": ">=2.2.0",
     "sequelize": ">=4"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
   },
   "devDependencies": {
     "admin-bro": "^2.2.0",
@@ -34,7 +40,13 @@
     "sequelize": "^4.42.0",
     "sequelize-cli": "^5.4.0",
     "sinon": "^7.1.1",
-    "sinon-chai": "^3.3.0"
+    "sinon-chai": "^3.3.0",
+    "husky": "^4.2.5",
+    "@commitlint/cli": "^8.3.5",
+    "@commitlint/config-conventional": "^8.3.4",
+    "semantic-release": "^17.0.7",
+    "semantic-release-jira-releases-sb": "^0.7.2",
+    "@semantic-release/git": "^9.0.0"
   },
   "dependencies": {
     "escape-regexp": "0.0.1"
