@@ -1,5 +1,5 @@
 const escape = require('escape-regexp')
-const { Op } = require('sequelize')
+const { Op, where, fn, col } = require('sequelize')
 
 const convertFilter = (filter) => {
   if (!filter) {
@@ -16,8 +16,10 @@ const convertFilter = (filter) => {
         }
       }
       return {
-        [property.name()]: { [Op.like]: `%${escape(value)}%` },
-        ...memo,
+        [Op.and]: [
+          where(fn('LOWER', col(property.name())), {[Op.like]:fn('LOWER', `%${escape(value)}%`)})
+        ],
+        ...memo
       }
     case 'number':
       if (!Number.isNaN(Number(value))) {
