@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-
+const { unflatten } = require('flat')
 const { BaseResource, BaseRecord } = require('admin-bro')
 const { Op } = require('sequelize')
 
@@ -116,8 +116,9 @@ class Resource extends BaseResource {
 
   async create(params) {
     const parsedParams = this.parseParams(params)
+    const unflattedParams = unflatten(parsedParams)
     try {
-      const record = await this.SequelizeModel.create(parsedParams)
+      const record = await this.SequelizeModel.create(unflattedParams)
       return record.toJSON()
     } catch (error) {
       if (error.name === SEQUELIZE_VALIDATION_ERROR) {
@@ -129,8 +130,9 @@ class Resource extends BaseResource {
 
   async update(id, params) {
     const parsedParams = this.parseParams(params)
+    const unflattedParams = unflatten(parsedParams)
     try {
-      await this.SequelizeModel.update(parsedParams, {
+      await this.SequelizeModel.update(unflattedParams, {
         where: {
           [this.SequelizeModel.primaryKeyField]: id,
         },
