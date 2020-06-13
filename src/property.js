@@ -1,5 +1,10 @@
 const { BaseProperty } = require('admin-bro')
 
+/**
+ * @type {Array<[string, import('admin-bro').PropertyType]>}
+ *
+ * @var {[type]}
+ */
 const TYPES_MAPPING = [
   ['STRING', 'string'],
   ['TEXT', 'string'],
@@ -62,9 +67,12 @@ class Property extends BaseProperty {
     return this.sequelizePath.type.constructor.name === 'ARRAY'
   }
 
+  /**
+   * @returns {import('admin-bro').PropertyType}
+   */
   type() {
     let sequelizeType = this.sequelizePath.type
-    
+
     if (this.isArray()) {
       sequelizeType = sequelizeType.type
     }
