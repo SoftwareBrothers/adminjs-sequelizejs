@@ -12,6 +12,18 @@ describe('Property', function () {
     db.sequelize.close()
   })
 
+  describe('#isArray', function () {
+    it('returns false for regular (not arrayed) property', function () {
+      const property = new Property(this.rawAttributes.email)
+      expect(property.isArray()).to.equal(false)
+    })
+
+    it('returns true for array property', function () {
+      const property = new Property(this.rawAttributes.arrayed)
+      expect(property.isArray()).to.equal(true)
+    })
+  })
+
   describe('#type', function () {
     it('returns correct string type', function () {
       const property = new Property(this.rawAttributes.firstName)
@@ -26,6 +38,11 @@ describe('Property', function () {
     it('returns correct date type', function () {
       const property = new Property(this.rawAttributes.createdAt)
       expect(property.type()).to.equal('datetime')
+    })
+
+    it('returns string when property is an array of strings', function () {
+      const property = new Property(this.rawAttributes.arrayed)
+      expect(property.type()).to.equal('string')
     })
   })
 
