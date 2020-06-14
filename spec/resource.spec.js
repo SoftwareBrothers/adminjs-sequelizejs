@@ -59,6 +59,17 @@ describe('Resource', function () {
     it('returns given property', function () {
       expect(this.resource.property('email')).to.be.an.instanceOf(Property)
     })
+
+    it('returns null when property doesn\'t exit', function () {
+      expect(this.resource.property('some.imagine.property')).to.be.null
+    })
+
+    it('returns nested property for array field', function () {
+      const property = this.resource.property('arrayed.1')
+
+      expect(property).to.be.an.instanceOf(Property)
+      expect(property.type()).to.equal('string')
+    })
   })
 
   describe('#findMany', function () {

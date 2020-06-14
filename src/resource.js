@@ -50,6 +50,16 @@ class Resource extends BaseResource {
   }
 
   property(path) {
+    const nested = path.split('.')
+
+    // if property is an array return the array property
+    if (nested.length > 1 && this.rawAttributes()[nested[0]]) {
+      return new Property(this.rawAttributes()[nested[0]])
+    }
+
+    if (!this.rawAttributes()[path]) {
+      return null
+    }
     return new Property(this.rawAttributes()[path])
   }
 
