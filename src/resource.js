@@ -179,8 +179,8 @@ class Resource extends BaseResource {
     const parsedParams = { ...params }
     this.properties().forEach((property) => {
       const value = parsedParams[property.name()]
-      if (['number', 'float', 'reference'].includes(property.type())) {
-        if (value === '') {
+      if (value === '') {
+        if (property.isArray() || property.type() !== 'string') {
           delete parsedParams[property.name()]
         }
       }
