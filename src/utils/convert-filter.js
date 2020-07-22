@@ -19,6 +19,7 @@ const convertFilter = (filter) => {
       }
       return {
         [Op.and]: [
+          ...(memo[Op.and] || []),
           where(
             fn('LOWER', col(`${property.sequelizePath.Model.name}.${property.name()}`)),
             Op.like,
