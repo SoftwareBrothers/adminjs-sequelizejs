@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 const { unflatten } = require('flat')
-const { BaseResource, BaseRecord } = require('admin-bro')
+const { BaseResource, BaseRecord } = require('@admin-bro/core')
 const { Op } = require('sequelize')
 
 const Property = require('./property')

@@ -17,8 +17,8 @@
  * In order to use it in your project register the adapter first:
  *
  * ```javascript
- * const AdminBro = require('admin-bro')
- * const AdminBroSequelize = require('admin-bro-sequelizejs')
+ * const AdminBro = require('@admin-bro/core')
+ * const AdminBroSequelize = require('@admin-bro/sequelize')
  *
  * AdminBro.registerAdapter(AdminBroSequelize)
  * ```

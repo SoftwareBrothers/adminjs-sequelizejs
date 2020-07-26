@@ -1,4 +1,4 @@
-const { ValidationError } = require('admin-bro')
+const { ValidationError } = require('@admin-bro/core')
 
 const createValidationError = (originalError) => {
   const errors = Object.keys(originalError.errors).reduce((memo, key) => {

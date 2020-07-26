@@ -1,4 +1,4 @@
-const { BaseDatabase } = require('admin-bro')
+const { BaseDatabase } = require('@admin-bro/core')
 const Resource = require('./resource')
 
 class Database extends BaseDatabase {

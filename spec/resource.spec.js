@@ -1,4 +1,4 @@
-const { ValidationError, Filter, BaseRecord } = require('admin-bro')
+const { ValidationError, Filter, BaseRecord } = require('@admin-bro/core')
 const Resource = require('../src/resource')
 const Property = require('../src/property')
 const config = require('../config/config')[process.env.NODE_ENV]
