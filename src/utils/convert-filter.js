@@ -21,10 +21,9 @@ const convertFilter = (filter) => {
         [Op.and]: [
           ...(memo[Op.and] || []),
           where(
-            fn('LOWER', col(`${property.sequelizePath.Model.name}.${property.name()}`)),
-            Op.like,
-            fn('LOWER', `%${escape(value)}%`),
-          ),
+            fn('LOWER', col(`${property.sequelizePath.Model.name}.${property.name()}`)), {
+              [Op.like]: fn('LOWER', `%${escape(value)}%`)
+            }),
         ],
         ...memo,
       }
