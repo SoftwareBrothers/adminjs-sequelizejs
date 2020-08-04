@@ -1,5 +1,5 @@
 /**
- * @module admin-bro-sequelizejs
+ * @module @admin-bro/sequelize
  *
  * @description
  * ### A Sequelize database adapter for AdminBro.
@@ -9,7 +9,7 @@
  * To install the adapter run
  *
  * ```
- * yarn add admin-bro-sequelizejs
+ * yarn add @admin-bro/sequelize
  * ```
  *
  * ### Usage
@@ -17,7 +17,7 @@
  * In order to use it in your project register the adapter first:
  *
  * ```javascript
- * const AdminBro = require('@admin-bro/core')
+ * const AdminBro = require('admin-bro')
  * const AdminBroSequelize = require('@admin-bro/sequelize')
  *
  * AdminBro.registerAdapter(AdminBroSequelize)
@@ -72,6 +72,7 @@
 /**
  * Implementation of {@link BaseDatabase} for Sequelize Adapter
  *
+ * @memberof module:@admin-bro/sequelize
  * @type {typeof BaseDatabase}
  * @static
  */
@@ -80,6 +81,7 @@ const Database = require('./src/database')
 /**
  * Implementation of {@link BaseResource} for Sequelize Adapter
  *
+ * @memberof module:@admin-bro/sequelize
  * @type {typeof BaseResource}
  * @static
  */

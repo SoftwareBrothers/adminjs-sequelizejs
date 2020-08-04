@@ -90,7 +90,7 @@ jobs:
           fields: repo,message,commit,author,action,eventName,ref,workflow # selectable (default: repo,message)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
         if: always()
 
   publish:
@@ -120,6 +120,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
           JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
         run: yarn release
 
       

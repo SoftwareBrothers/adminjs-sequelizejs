@@ -1,6 +1,6 @@
-const { BaseProperty } = require('@admin-bro/core')
+const { BaseProperty } = require('admin-bro')
 
-/** @typedef {import('@admin-bro/core').PropertyType} PropertyType */
+/** @typedef {import('admin-bro').PropertyType} PropertyType */
 
 const TYPES_MAPPING = [
   ['STRING', 'string'],
