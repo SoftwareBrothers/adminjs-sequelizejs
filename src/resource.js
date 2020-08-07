@@ -8,6 +8,7 @@ const convertFilter = require('./utils/convert-filter')
 const createValidationError = require('./utils/create-validation-error')
 
 const SEQUELIZE_VALIDATION_ERROR = 'SequelizeValidationError'
+const SEQUELIZE_UNIQUE_ERROR = 'SequelizeUniqueConstraintError'
 
 class Resource extends BaseResource {
   static isAdapterFor(rawResource) {
@@ -134,6 +135,9 @@ class Resource extends BaseResource {
       if (error.name === SEQUELIZE_VALIDATION_ERROR) {
         throw createValidationError(error)
       }
+      if (error.name === SEQUELIZE_UNIQUE_ERROR) {
+        throw createValidationError(error)
+      }
       throw error
     }
   }
@@ -151,6 +155,9 @@ class Resource extends BaseResource {
       return record.toJSON()
     } catch (error) {
       if (error.name === SEQUELIZE_VALIDATION_ERROR) {
+        throw createValidationError(error)
+      }
+      if (error.name === SEQUELIZE_UNIQUE_ERROR) {
         throw createValidationError(error)
       }
       throw error
