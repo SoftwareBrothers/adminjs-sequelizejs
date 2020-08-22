@@ -1,6 +1,6 @@
 {
-  "name": "admin-bro-sequelizejs",
-  "version": "0.5.1",
+  "name": "@admin-bro/sequelize",
+  "version": "1.0.0-beta.3",
   "description": "Sequelize adapter for AdminBro",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
   "author": "Wojciech Krysiak",
   "license": "MIT",
   "peerDependencies": {
-    "admin-bro": ">=2.2.0",
+    "admin-bro": ">=3.0.0",
     "sequelize": ">=4"
   },
   "husky": {
@@ -30,7 +30,7 @@
     "@commitlint/config-conventional": "^8.3.4",
     "@semantic-release/git": "^9.0.0",
     "@types/mocha": "^7.0.2",
-    "admin-bro": "^2.2.0",
+    "admin-bro": "^3.0.0",
     "chai": "^4.2.0",
     "eslint": "^5.10.0",
     "eslint-config-airbnb-base": "^13.1.0",
@@ -44,6 +44,7 @@
     "pg": "^7.7.1",
     "semantic-release": "^17.0.7",
     "semantic-release-jira-releases-sb": "^0.7.2",
+    "semantic-release-slack-bot": "^1.6.2",
     "sequelize": "^4.42.0",
     "sequelize-cli": "^5.4.0",
     "sinon": "^7.1.1",

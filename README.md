@@ -8,7 +8,7 @@ The plugin can be registered using standard `AdminBro.registerAdapter` method.
 
 ```javascript
 const AdminBro = require('admin-bro')
-const AdminBroSequelize = require('admin-bro-sequelizejs')
+const AdminBroSequelize = require('@admin-bro/sequelize')
 
 AdminBro.registerAdapter(AdminBroSequelize)
 ```
