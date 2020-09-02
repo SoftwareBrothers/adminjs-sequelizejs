@@ -9,6 +9,8 @@ import AdminBro from 'admin-bro'
 import { buildRouter } from '@admin-bro/express'
 import AdminBroSequelize from '@admin-bro/sequelize'
 
+import userAdmin from './users/user.admin'
+
 import connect from './connect'
 
 const PORT = 3000
@@ -19,9 +21,10 @@ const run = async () => {
   const app = express()
   const admin = new AdminBro({
     databases: [sequelize],
-    resources: [
-
-    ],
+    resources: [{
+      resource: sequelize.models.User,
+      options: userAdmin,
+    }],
   })
 
   admin.watch()

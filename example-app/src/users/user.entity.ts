@@ -15,6 +15,10 @@ const build = (sequelize: Sequelize) => {
       type: DataTypes.STRING,
     // allowNull defaults to true
     },
+    json: {
+      type: DataTypes.JSONB,
+      defaultValue: { '.': '.' },
+    },
   }, {
   // Other model options go here
   })
