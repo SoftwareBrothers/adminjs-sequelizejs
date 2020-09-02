@@ -1,18 +1,20 @@
-const Property = require('../src/property')
+/* eslint-disable @typescript-eslint/no-var-requires */
+import chai, { expect } from 'chai'
+import sinonChai from 'sinon-chai'
+
+import Property from './property'
+
+chai.use(sinonChai)
 
 const db = require('../models/index.js')
 
-describe('Property', function () {
+describe('Property', () => {
   before(function () {
     this.SequelizeModel = db.sequelize.models.User
     this.rawAttributes = this.SequelizeModel.attributes || this.SequelizeModel.rawAttributes
   })
 
-  after(function () {
-    db.sequelize.close()
-  })
-
-  describe('#isArray', function () {
+  describe('#isArray', () => {
     it('returns false for regular (not arrayed) property', function () {
       const property = new Property(this.rawAttributes.email)
       expect(property.isArray()).to.equal(false)
@@ -24,7 +26,7 @@ describe('Property', function () {
     })
   })
 
-  describe('#type', function () {
+  describe('#type', () => {
     it('returns correct string type', function () {
       const property = new Property(this.rawAttributes.firstName)
       expect(property.type()).to.equal('string')
@@ -46,7 +48,7 @@ describe('Property', function () {
     })
   })
 
-  describe('#availableValues', function () {
+  describe('#availableValues', () => {
     it('returns null for all standard (Non enum) values', function () {
       const property = new Property(this.rawAttributes.email)
       expect(property.availableValues()).to.equal(null)
@@ -58,7 +60,7 @@ describe('Property', function () {
     })
   })
 
-  describe('isRequired', function () {
+  describe('isRequired', () => {
     it('returns true for required fields', function () {
       const property = new Property(this.rawAttributes.email)
       expect(property.isRequired()).to.equal(true)
