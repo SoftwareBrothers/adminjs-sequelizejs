@@ -1,4 +1,4 @@
-GENDER_CHOICES = {
+const GENDER_CHOICES = {
   MALE: "male",
   FEMALE: "female",
 }

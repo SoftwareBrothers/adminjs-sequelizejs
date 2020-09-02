@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+      "outDir": "./build",
+      "target": "es2017",
+      "esModuleInterop": true,
+      "jsx": "preserve",
+      "declaration": true,
+      "declarationDir": "./types",
+      "strictNullChecks": true,
+      "strictPropertyInitialization": true,
+      "strictFunctionTypes": true,
+      "strictBindCallApply": true,
+      "noImplicitThis": true,
+      "moduleResolution": "node",
+      "module": "commonjs",
+      "baseUrl": "./src",
+      "skipLibCheck": true
+    },
+    "include": [
+      "./src/**/*"
+    ],
+  }

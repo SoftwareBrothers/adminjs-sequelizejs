@@ -1,61 +1,65 @@
-const { ValidationError, Filter, BaseRecord } = require('admin-bro')
-const Resource = require('../src/resource')
-const Property = require('../src/property')
-const config = require('../config/config')[process.env.NODE_ENV]
+/* eslint-disable @typescript-eslint/no-var-requires */
+import { ValidationError, Filter, BaseRecord } from 'admin-bro'
+
+import chai, { expect } from 'chai'
+import sinonChai from 'sinon-chai'
+
+import Resource from './resource'
+import Property from './property'
+
+chai.use(sinonChai)
+
+const config = require('../config/config')[process.env.NODE_ENV as string]
 const db = require('../models/index.js')
 
-describe('Resource', function () {
+describe('Resource', () => {
   before(function () {
     this.SequelizeModel = db.sequelize.models.User
     this.resource = new Resource(this.SequelizeModel)
-  })
-
-  after(async function () {
-    await db.sequelize.close()
   })
 
   afterEach(async function () {
     await this.SequelizeModel.destroy({ where: {} })
   })
 
-  describe('.isAdapterFor', function () {
+  describe('.isAdapterFor', () => {
     it('returns true when sequelize model is given', function () {
       expect(Resource.isAdapterFor(this.SequelizeModel)).to.equal(true)
     })
   })
 
-  describe('#database', function () {
+  describe('#database', () => {
     it('returns correct database name', function () {
       expect(this.resource.databaseName()).to.equal(config.database)
     })
   })
 
-  describe('#databaseType', function () {
+  describe('#databaseType', () => {
     it('returns correct database', function () {
       expect(this.resource.databaseType()).to.equal(config.dialect)
     })
   })
 
-  describe('#name', function () {
+  describe('#name', () => {
     it('returns correct name', function () {
       expect(this.resource.name()).to.equal('Users')
     })
   })
 
-  describe('#id', function () {
+  describe('#id', () => {
     it('returns correct name', function () {
       expect(this.resource.id()).to.equal('Users')
     })
   })
 
-  describe('#properties', function () {
+  describe('#properties', () => {
     it('returns all properties', function () {
       const length = 8 // there are 8 properties in the User model (5 regular + __v and _id)
       expect(this.resource.properties()).to.have.lengthOf(length)
     })
   })
 
-  describe('#property', function () {
+  describe('#property', () => {
     it('returns given property', function () {
       expect(this.resource.property('email')).to.be.an.instanceOf(Property)
     })
@@ -72,7 +76,7 @@ describe('Resource', function () {
     })
   })
 
-  describe('#findMany', function () {
+  describe('#findMany', () => {
     it('returns array of BaseRecords', async function () {
       const params = await this.resource.create({ email: 'john.doe@softwarebrothers.co' })
 
@@ -83,7 +87,7 @@ describe('Resource', function () {
     })
   })
 
-  describe('#find with filter', function () {
+  describe('#find with filter', () => {
     beforeEach(async function () {
       this.params = {
         gender: 'male',
@@ -119,20 +123,20 @@ describe('Resource', function () {
       try {
         await this.resource.find(filter, { limit: 20, offset: 0, sort: { direction: 'asc', sortBy: 'id' } })
       } catch (error) {
-        expect(error).to.be.an.instanceOf(db.sequelize.DatabaseError)
+        expect(error.name).to.eq('SequelizeDatabaseError')
       }
     })
   })
 
-  describe('#count', function () {
+  describe('#count', () => {
     it('returns 0 when there are none elements', async function () {
-      const count = await this.resource.count(new Filter({}))
+      const count = await this.resource.count(new Filter({} as any, {} as any))
       expect(count).to.equal(0)
     })
 
     it('returns given count without filters', async function () {
       await this.resource.create({ email: 'john.doe@softwarebrothers.co' })
-      expect(await this.resource.count(new Filter({}))).to.equal(1)
+      expect(await this.resource.count(new Filter({} as any, {} as any))).to.equal(1)
     })
 
     it('returns given count for given filters', async function () {
@@ -153,8 +157,8 @@ describe('Resource', function () {
     })
   })
 
-  describe('#create', function () {
-    context('correct record', function () {
+  describe('#create', () => {
+    context('correct record', () => {
       beforeEach(async function () {
         this.params = {
           firstName: 'john',
@@ -174,7 +178,7 @@ describe('Resource', function () {
       })
     })
 
-    context('record with errors', function () {
+    context('record with errors', () => {
       beforeEach(async function () {
         this.params = {
           firstName: '',
@@ -192,7 +196,7 @@ describe('Resource', function () {
       })
     })
 
-    context('record with empty id field', function () {
+    context('record with empty id field', () => {
       beforeEach(function () {
         this.SequelizeModel = db.sequelize.models.Post
         this.resource = new Resource(this.SequelizeModel)
@@ -211,7 +215,7 @@ describe('Resource', function () {
     })
   })
 
-  describe('#update', function () {
+  describe('#update', () => {
     beforeEach(async function () {
       this.params = {
         firstName: 'john',

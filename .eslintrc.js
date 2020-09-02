@@ -1,51 +1,59 @@
 module.exports = {
-    'env': {
-        'es6': true,
-        'node': true,
-        'mocha': true
+  env: {
+    browser: true,
+    es2020: true,
+  },
+  extends: [
+    'airbnb',
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
+  ignorePatterns: [
+    '*/build/**/*',
+    '*.json',
+    '*.txt',
+    'yarn.lock',
+    '*.yaml',
+  ],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
     },
-    'extends': 'airbnb-base',
-    'parserOptions': {
-        'ecmaVersion': 2018,
-        'sourceType': 'module'
-    },
-    'rules': {
-        'indent': [
-            'error',
-            2
-        ],
-        'linebreak-style': [
-            'error',
-            'unix'
-        ],
-        'quotes': [
-            'error',
-            'single'
-        ],
-        'semi': [
-            'error',
-            'never'
-        ],
-        'import/no-unresolved': 'off',
-        'no-underscore-dangle': 'off',
-        'guard-for-in': 'off',
-        'no-restricted-syntax': 'off',
-        'no-await-in-loop': 'off',
-    },
-    overrides: [
-        {
-          files: ['*-test.js', '*.spec.js'],
-          rules: {
-            'no-unused-expressions': 'off',
-            'func-names': 'off',
-            'prefer-arrow-callback': 'off'
-          }
-        }
+    ecmaVersion: 11,
+    sourceType: 'module',
+  },
+  plugins: [
+    'react',
+    '@typescript-eslint',
+  ],
+  rules: {
+    semi: ['error', 'never'],
+    'no-unused-vars': 'off',
+    'import/extensions': 'off',
+    'import/no-unresolved': 'off',
+    'react/jsx-filename-extension': 'off',
+    indent: [
+      'error',
+      2,
     ],
-    globals: {
-        'expect': true,
-        'factory': true,
-        'sandbox': true,
-        'User': true
-    }
+    'linebreak-style': ['error', 'unix'],
+    'object-curly-newline': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+  },
+  overrides: [{
+    files: ['*.tsx'],
+    rules: {
+      'react/prop-types': 'off',
+      'react/jsx-props-no-spreading': 'off',
+      'import/no-extraneous-dependencies': 'off',
+    },
+  }, {
+    files: ['./src/**/*.spec.ts', 'spec/*.ts'],
+    rules: {
+      'no-unused-expressions': 'off',
+      'func-names': 'off',
+      'import/no-extraneous-dependencies': 'off',
+    },
+  }],
 }

@@ -1,7 +1,7 @@
-const escape = require('escape-regexp')
-const {
+import escape from 'escape-regexp'
+import {
   Op, where, fn, col,
-} = require('sequelize')
+} from 'sequelize'
 
 const convertFilter = (filter) => {
   if (!filter) {
@@ -22,7 +22,7 @@ const convertFilter = (filter) => {
           ...(memo[Op.and] || []),
           where(
             fn('LOWER', col(`${property.sequelizePath.Model.name}.${property.name()}`)), {
-              [Op.like]: fn('LOWER', `%${escape(value)}%`),
+              [Op.like as unknown as string]: fn('LOWER', `%${escape(value)}%`),
             },
           ),
         ],
@@ -58,4 +58,4 @@ const convertFilter = (filter) => {
   }, {})
 }
 
-module.exports = convertFilter
+export default convertFilter

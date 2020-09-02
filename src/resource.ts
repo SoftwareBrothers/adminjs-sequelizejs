@@ -1,56 +1,74 @@
 /* eslint-disable no-param-reassign */
-const { unflatten } = require('flat')
-const { BaseResource, BaseRecord } = require('admin-bro')
-const { Op } = require('sequelize')
+import { unflatten } from 'flat'
+import { BaseResource, BaseRecord, BaseProperty, Filter } from 'admin-bro'
+import { Op } from 'sequelize'
 
-const Property = require('./property')
-const convertFilter = require('./utils/convert-filter')
-const createValidationError = require('./utils/create-validation-error')
+import { Model, ModelAttributeColumnOptions } from 'sequelize/types'
+import Property from './property'
+import convertFilter from './utils/convert-filter'
+import createValidationError from './utils/create-validation-error'
 
 const SEQUELIZE_VALIDATION_ERROR = 'SequelizeValidationError'
 const SEQUELIZE_UNIQUE_ERROR = 'SequelizeUniqueConstraintError'
 
+// this fixes problem with unbound this when you setup type of Mode as a member of another
+// class: https://stackoverflow.com/questions/55166230/sequelize-typescript-typeof-model
+type Constructor<T> = new (...args: any[]) => T;
+type ModelType<T extends Model<T>> = Constructor<T> & typeof Model;
+
+type FindOptions = {
+  limit?: number;
+  offset?: number;
+  sort?: {
+    sortBy?: string;
+    direction?: 'asc' | 'desc';
+  };
+}
+
 class Resource extends BaseResource {
-  static isAdapterFor(rawResource) {
+  private SequelizeModel: ModelType<any>
+
+  static isAdapterFor(rawResource): boolean {
     return rawResource.sequelize && rawResource.sequelize.constructor.name === 'Sequelize'
   }
 
-  constructor(SequelizeModel) {
+  constructor(SequelizeModel: typeof Model) {
     super(SequelizeModel)
-    this.SequelizeModel = SequelizeModel
+    this.SequelizeModel = SequelizeModel as ModelType<any>
   }
 
-  rawAttributes() {
+  rawAttributes(): Record<string, ModelAttributeColumnOptions> {
     // different sequelize versions stores attributes in different places
     // .rawAttributes => sequelize ^5.0.0
     // .attributes => sequelize ^4.0.0
-    return this.SequelizeModel.attributes || this.SequelizeModel.rawAttributes
+    return ((this.SequelizeModel as any).attributes
+      || (this.SequelizeModel as any).rawAttributes) as Record<string, ModelAttributeColumnOptions>
   }
 
-  databaseName() {
-    return this.SequelizeModel.sequelize.options.database
-      || this.SequelizeModel.sequelize.options.host
+  databaseName(): string {
+    return (this.SequelizeModel.sequelize as any).options.database
+      || (this.SequelizeModel.sequelize as any).options.host
   }
 
-  databaseType() {
-    return this.SequelizeModel.sequelize.options.dialect
+  databaseType(): string {
+    return (this.SequelizeModel.sequelize as any).options.dialect
   }
 
-  name() {
+  name(): string {
     return this.SequelizeModel.tableName
   }
 
-  id() {
+  id(): string {
     return this.SequelizeModel.tableName
   }
 
-  properties() {
-    return Object.keys(this.rawAttributes()).map(key => (
+  properties(): Array<BaseProperty> {
+    return Object.keys(this.rawAttributes()).map((key) => (
       new Property(this.rawAttributes()[key])
     ))
   }
 
-  property(path) {
+  property(path: string): BaseProperty | null {
     const nested = path.split('.')
 
     // if property is an array return the array property
@@ -64,45 +82,49 @@ class Resource extends BaseResource {
     return new Property(this.rawAttributes()[path])
   }
 
-  async count(filter) {
+  async count(filter: Filter) {
     return this.SequelizeModel.count(({
       where: convertFilter(filter),
     }))
   }
 
-  async populate(baseRecords, property) {
-    const ids = baseRecords.map(baseRecord => (
+  primaryKey(): string {
+    return (this.SequelizeModel as any).primaryKeyField || this.SequelizeModel.primaryKeyAttribute
+  }
+
+  async populate(baseRecords, property): Promise<Array<BaseRecord>> {
+    const ids = baseRecords.map((baseRecord) => (
       baseRecord.param(property.name())
     ))
     const records = await this.SequelizeModel.findAll({
-      where: { [this.SequelizeModel.primaryKeyField]: ids },
+      where: { [this.primaryKey()]: ids },
     })
     const recordsHash = records.reduce((memo, record) => {
-      memo[record.id] = record
+      memo[this.primaryKey()] = record
       return memo
     }, {})
     baseRecords.forEach((baseRecord) => {
       const id = baseRecord.param(property.name())
       if (recordsHash[id]) {
         const referenceRecord = new BaseRecord(
-          recordsHash[id].toJSON(), this,
+          recordsHash[id].toJSON(), this as unknown as BaseResource,
         )
         baseRecord.populated[property.name()] = referenceRecord
       }
     })
-    return true
+    return baseRecords
   }
 
-  async find(filter, { limit = 20, offset = 0, sort = {} }) {
+  async find(filter, { limit = 20, offset = 0, sort = {} }: FindOptions) {
     const { direction, sortBy } = sort
     const sequelizeObjects = await this.SequelizeModel
       .findAll({
         where: convertFilter(filter),
         limit,
         offset,
-        order: [[sortBy, (direction || 'asc').toUpperCase()]],
+        order: [[sortBy as string, (direction || 'asc').toUpperCase()]],
       })
-    return sequelizeObjects.map(sequelizeObject => new BaseRecord(sequelizeObject.toJSON(), this))
+    return sequelizeObjects.map((sequelizeObject) => new BaseRecord(sequelizeObject.toJSON(), this))
   }
 
   async findOne(id) {
@@ -113,14 +135,15 @@ class Resource extends BaseResource {
   async findMany(ids) {
     const sequelizeObjects = await this.SequelizeModel.findAll({
       where: {
-        [this.SequelizeModel.primaryKeyField]: { [Op.in]: ids },
+        [this.primaryKey()]: { [Op.in]: ids },
       },
     })
-    return sequelizeObjects.map(sequelizeObject => new BaseRecord(sequelizeObject.toJSON(), this))
+    return sequelizeObjects.map((sequelizeObject) => new BaseRecord(sequelizeObject.toJSON(), this))
   }
 
   async findById(id) {
-    // versions of Sequelize before 5 had findById method - after that there was findByPk
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore versions of Sequelize before 5 had findById method - after that there was findByPk
     const method = this.SequelizeModel.findByPk ? 'findByPk' : 'findById'
     return this.SequelizeModel[method](id)
   }
@@ -148,7 +171,7 @@ class Resource extends BaseResource {
     try {
       await this.SequelizeModel.update(unflattedParams, {
         where: {
-          [this.SequelizeModel.primaryKeyField]: id,
+          [this.primaryKey()]: id,
         },
       })
       const record = await this.findById(id)
@@ -165,9 +188,9 @@ class Resource extends BaseResource {
   }
 
   async delete(id) {
-    return this.SequelizeModel.destroy({
+    this.SequelizeModel.destroy({
       where: {
-        [this.SequelizeModel.primaryKeyField]: id,
+        [this.primaryKey()]: id,
       },
     })
   }
@@ -199,4 +222,4 @@ class Resource extends BaseResource {
   }
 }
 
-module.exports = Resource
+export default Resource
