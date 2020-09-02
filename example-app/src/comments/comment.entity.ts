@@ -10,6 +10,9 @@ const build = (sequelize: Sequelize) => {
     userId: {
       type: DataTypes.INTEGER,
     },
+    friends: {
+      type: DataTypes.ARRAY(DataTypes.TEXT),
+    },
   }, {
     // Other model options go here
   })
