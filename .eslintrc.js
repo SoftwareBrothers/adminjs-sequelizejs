@@ -52,6 +52,7 @@ module.exports = {
     files: ['./src/**/*.spec.ts', 'spec/*.ts'],
     rules: {
       'no-unused-expressions': 'off',
+      'prefer-arrow-callback': 'off',
       'func-names': 'off',
       'import/no-extraneous-dependencies': 'off',
     },

@@ -3,8 +3,9 @@ import { ValidationError, Filter, BaseRecord } from 'admin-bro'
 
 import chai, { expect } from 'chai'
 import sinonChai from 'sinon-chai'
+import sinon from 'sinon'
 
-import Resource from './resource'
+import Resource, { ModelType } from './resource'
 import Property from './property'
 
 chai.use(sinonChai)
@@ -12,75 +13,78 @@ chai.use(sinonChai)
 const config = require('../config/config')[process.env.NODE_ENV as string]
 const db = require('../models/index.js')
 
-describe('Resource', () => {
+describe('Resource', function () {
+  let SequelizeModel: ModelType<any>
+  let resource: Resource
+
   before(function () {
-    this.SequelizeModel = db.sequelize.models.User
-    this.resource = new Resource(this.SequelizeModel)
+    SequelizeModel = db.sequelize.models.User
+    resource = new Resource(SequelizeModel)
   })
 
   afterEach(async function () {
-    await this.SequelizeModel.destroy({ where: {} })
+    await SequelizeModel.destroy({ where: {} })
   })
 
   describe('.isAdapterFor', () => {
     it('returns true when sequelize model is given', function () {
-      expect(Resource.isAdapterFor(this.SequelizeModel)).to.equal(true)
+      expect(Resource.isAdapterFor(SequelizeModel)).to.equal(true)
     })
   })
 
   describe('#database', () => {
     it('returns correct database name', function () {
-      expect(this.resource.databaseName()).to.equal(config.database)
+      expect(resource.databaseName()).to.equal(config.database)
     })
   })
 
   describe('#databaseType', () => {
     it('returns correct database', function () {
-      expect(this.resource.databaseType()).to.equal(config.dialect)
+      expect(resource.databaseType()).to.equal(config.dialect)
     })
   })
 
   describe('#name', () => {
     it('returns correct name', function () {
-      expect(this.resource.name()).to.equal('Users')
+      expect(resource.name()).to.equal('Users')
     })
   })
 
   describe('#id', () => {
     it('returns correct name', function () {
-      expect(this.resource.id()).to.equal('Users')
+      expect(resource.id()).to.equal('Users')
     })
   })
 
   describe('#properties', () => {
     it('returns all properties', function () {
       const length = 8 // there are 8 properties in the User model (5 regular + __v and _id)
-      expect(this.resource.properties()).to.have.lengthOf(length)
+      expect(resource.properties()).to.have.lengthOf(length)
     })
   })
 
   describe('#property', () => {
     it('returns given property', function () {
-      expect(this.resource.property('email')).to.be.an.instanceOf(Property)
+      expect(resource.property('email')).to.be.an.instanceOf(Property)
     })
 
     it('returns null when property doesn\'t exit', function () {
-      expect(this.resource.property('some.imagine.property')).to.be.null
+      expect(resource.property('some.imagine.property')).to.be.null
     })
 
     it('returns nested property for array field', function () {
-      const property = this.resource.property('arrayed.1')
+      const property = resource.property('arrayed.1')
 
       expect(property).to.be.an.instanceOf(Property)
-      expect(property.type()).to.equal('string')
+      expect(property?.type()).to.equal('string')
     })
   })
 
   describe('#findMany', () => {
     it('returns array of BaseRecords', async function () {
-      const params = await this.resource.create({ email: 'john.doe@softwarebrothers.co' })
+      const params = await resource.create({ email: 'john.doe@softwarebrothers.co' })
 
-      const records = await this.resource.findMany([params.id])
+      const records = await resource.findMany([params.id])
 
       expect(records).to.have.lengthOf(1)
       expect(records[0]).to.be.instanceOf(BaseRecord)
@@ -93,14 +97,14 @@ describe('Resource', () => {
         gender: 'male',
         email: 'john.doe@softwarebrothers.co',
       }
-      this.record = await this.resource.create(this.params)
+      this.record = await resource.create(this.params)
     })
 
     it('returns 1 BaseRecord when filtering on ENUMS', async function () {
       const filter = new Filter({
         gender: 'male',
-      }, this.resource)
-      const records = await this.resource.find(filter, { limit: 20, offset: 0, sort: { direction: 'asc', sortBy: 'id' } })
+      }, resource)
+      const records = await resource.find(filter, { limit: 20, offset: 0, sort: { direction: 'asc', sortBy: 'id' } })
 
       expect(records).to.have.lengthOf(1)
       expect(records[0]).to.be.instanceOf(BaseRecord)
@@ -110,8 +114,8 @@ describe('Resource', () => {
     it('returns 0 BaseRecord when filtering on ENUMS', async function () {
       const filter = new Filter({
         gender: 'female',
-      }, this.resource)
-      const records = await this.resource.find(filter, { limit: 20, offset: 0, sort: { direction: 'asc', sortBy: 'id' } })
+      }, resource)
+      const records = await resource.find(filter, { limit: 20, offset: 0, sort: { direction: 'asc', sortBy: 'id' } })
 
       expect(records).to.have.lengthOf(0)
     })
@@ -119,9 +123,9 @@ describe('Resource', () => {
     it('returns error when filtering on ENUMS with invalid value', async function () {
       const filter = new Filter({
         gender: 'XXX',
-      }, this.resource)
+      }, resource)
       try {
-        await this.resource.find(filter, { limit: 20, offset: 0, sort: { direction: 'asc', sortBy: 'id' } })
+        await resource.find(filter, { limit: 20, offset: 0, sort: { direction: 'asc', sortBy: 'id' } })
       } catch (error) {
         expect(error.name).to.eq('SequelizeDatabaseError')
       }
@@ -130,30 +134,30 @@ describe('Resource', () => {
 
   describe('#count', () => {
     it('returns 0 when there are none elements', async function () {
-      const count = await this.resource.count(new Filter({} as any, {} as any))
+      const count = await resource.count(new Filter({} as any, {} as any))
       expect(count).to.equal(0)
     })
 
     it('returns given count without filters', async function () {
-      await this.resource.create({ email: 'john.doe@softwarebrothers.co' })
-      expect(await this.resource.count(new Filter({} as any, {} as any))).to.equal(1)
+      await resource.create({ email: 'john.doe@softwarebrothers.co' })
+      expect(await resource.count(new Filter({} as any, {} as any))).to.equal(1)
     })
 
     it('returns given count for given filters', async function () {
-      await this.resource.create({
+      await resource.create({
         firstName: 'john',
         lastName: 'doe',
         email: 'john.doe@softwarebrothers.co',
       })
-      await this.resource.create({
+      await resource.create({
         firstName: 'andrew',
         lastName: 'golota',
         email: 'andrew.golota@softwarebrothers.co',
       })
       const filter = new Filter({
         email: 'andrew.golota@softwarebrothers.co',
-      }, this.resource)
-      expect(await this.resource.count(filter)).to.equal(1)
+      }, resource)
+      expect(await resource.count(filter)).to.equal(1)
     })
   })
 
@@ -165,11 +169,11 @@ describe('Resource', () => {
           lastName: 'doe',
           email: 'john.doe@softwarebrothers.co',
         }
-        this.record = await this.resource.create(this.params)
+        this.record = await resource.create(this.params)
       })
 
       it('creates new user when data is valid', async function () {
-        const newCount = await this.resource.count()
+        const newCount = await resource.count(null as any)
         expect(newCount).to.equal(1)
       })
 
@@ -189,7 +193,7 @@ describe('Resource', () => {
 
       it('throws validation error', async function () {
         try {
-          await this.resource.create(this.params)
+          await resource.create(this.params)
         } catch (error) {
           expect(error).to.be.an.instanceOf(ValidationError)
         }
@@ -198,8 +202,8 @@ describe('Resource', () => {
 
     context('record with empty id field', () => {
       beforeEach(function () {
-        this.SequelizeModel = db.sequelize.models.Post
-        this.resource = new Resource(this.SequelizeModel)
+        SequelizeModel = db.sequelize.models.Post
+        resource = new Resource(SequelizeModel)
       })
 
       it('creates record without an error', async function () {
@@ -209,7 +213,7 @@ describe('Resource', () => {
           publishedAt: '2019-12-10 12:00',
           userId: '',
         }
-        this.recordParams = await this.resource.create(this.params)
+        this.recordParams = await resource.create(this.params)
         expect(this.recordParams.userId).to.be.null
       })
     })
@@ -217,20 +221,74 @@ describe('Resource', () => {
 
   describe('#update', () => {
     beforeEach(async function () {
+      SequelizeModel = db.sequelize.models.User
+      resource = new Resource(SequelizeModel)
       this.params = {
         firstName: 'john',
         lastName: 'doe',
         email: 'john.doe@softwarebrothers.co',
       }
-      this.record = await this.resource.create(this.params)
+      this.record = await resource.create(this.params)
     })
 
     it('updates the title', async function () {
       this.newEmail = 'w@k.pl'
-      this.record = await this.resource.update(this.record.id, {
+      const params = await resource.update(this.record.id, {
         email: this.newEmail,
       })
-      expect(this.record.email).to.equal(this.newEmail)
+
+      expect(params.email).to.equal(this.newEmail)
+    })
+
+    it('calls update hooks', async function () {
+      const beforeUpdateSpy = sinon.spy()
+      const afterUpdateSpy = sinon.spy()
+      const beforeBulkUpdateSpy = sinon.spy()
+      SequelizeModel.addHook('beforeUpdate', beforeUpdateSpy)
+      SequelizeModel.addHook('beforeBulkUpdate', beforeBulkUpdateSpy)
+      SequelizeModel.addHook('afterUpdate', afterUpdateSpy)
+
+      await resource.update(this.record.id, { firstName: 'jack' })
+
+      expect(beforeUpdateSpy).to.have.been.called
+      expect(afterUpdateSpy).to.have.been.called
+      expect(beforeBulkUpdateSpy).not.to.have.been.called
+    })
+  })
+
+  describe('#delete', () => {
+    beforeEach(async function () {
+      SequelizeModel = db.sequelize.models.User
+      resource = new Resource(SequelizeModel)
+      this.params = {
+        firstName: 'john',
+        lastName: 'doe',
+        email: 'john.doe@softwarebrothers.co',
+      }
+      this.record = await resource.create(this.params)
+    })
+
+    it('deletes the resource', async function () {
+      await resource.delete(this.record.id)
+
+      const newRecord = await resource.findOne(this.record.id)
+
+      expect(newRecord).to.be.null
+    })
+
+    it('calls delete hooks', async function () {
+      const beforeDestroySpy = sinon.spy()
+      const afterDestroySpy = sinon.spy()
+      const beforeDestroyUpdateSpy = sinon.spy()
+      SequelizeModel.addHook('beforeDestroy', beforeDestroySpy)
+      SequelizeModel.addHook('beforeBulkDestroy', beforeDestroyUpdateSpy)
+      SequelizeModel.addHook('afterDestroy', afterDestroySpy)
+
+      await resource.delete(this.record.id)
+
+      expect(beforeDestroySpy).to.have.been.called
+      expect(afterDestroySpy).to.have.been.called
+      expect(beforeDestroyUpdateSpy).not.to.have.been.called
     })
   })
 })

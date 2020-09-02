@@ -14,7 +14,7 @@ const SEQUELIZE_UNIQUE_ERROR = 'SequelizeUniqueConstraintError'
 // this fixes problem with unbound this when you setup type of Mode as a member of another
 // class: https://stackoverflow.com/questions/55166230/sequelize-typescript-typeof-model
 type Constructor<T> = new (...args: any[]) => T;
-type ModelType<T extends Model<T>> = Constructor<T> & typeof Model;
+export type ModelType<T extends Model<T>> = Constructor<T> & typeof Model;
 
 type FindOptions = {
   limit?: number;
@@ -127,8 +127,11 @@ class Resource extends BaseResource {
     return sequelizeObjects.map((sequelizeObject) => new BaseRecord(sequelizeObject.toJSON(), this))
   }
 
-  async findOne(id) {
+  async findOne(id): Promise<BaseRecord | null> {
     const sequelizeObject = await this.findById(id)
+    if (!sequelizeObject) {
+      return null
+    }
     return new BaseRecord(sequelizeObject.toJSON(), this)
   }
 
@@ -148,7 +151,7 @@ class Resource extends BaseResource {
     return this.SequelizeModel[method](id)
   }
 
-  async create(params) {
+  async create(params): Promise<Record<string, any>> {
     const parsedParams = this.parseParams(params)
     const unflattedParams = unflatten(parsedParams)
     try {
@@ -173,6 +176,8 @@ class Resource extends BaseResource {
         where: {
           [this.primaryKey()]: id,
         },
+        individualHooks: true,
+        hooks: false,
       })
       const record = await this.findById(id)
       return record.toJSON()
@@ -187,12 +192,13 @@ class Resource extends BaseResource {
     }
   }
 
-  async delete(id) {
-    this.SequelizeModel.destroy({
-      where: {
-        [this.primaryKey()]: id,
-      },
-    })
+  async delete(id): Promise<void> {
+    // we find first because we need to invoke destroy on model, so all hooks
+    // instance hooks (not bulk) are called.
+    // We cannot set {individualHooks: true, hooks: false} in this.SequelizeModel.destroy,
+    // as it is in #update method because for some reason it wont delete the record
+    const model = await this.SequelizeModel.findByPk(id)
+    await model.destroy()
   }
 
   /**

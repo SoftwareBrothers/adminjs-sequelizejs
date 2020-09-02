@@ -18,8 +18,10 @@
   resolved "https://registry.yarnpkg.com/@admin-bro/express/-/express-3.0.0.tgz#0ac581bbd4511d8854d07409b980e0fff3d9d8e0"
   integrity sha512-Ya/a3F/JT//VanaIjlVBeU6gh1afwcjU/q9qhMcETKwy3M+QbVhfmLdOyD1mFqVxwifnkiGnC6gPkupb51C9Pg==
 
-"@admin-bro/sequelize@../":
-  version "1.0.0-beta.3"
+"@admin-bro/sequelize@1.0.0-beta.5":
+  version "1.0.0-beta.5"
+  resolved "https://registry.yarnpkg.com/@admin-bro/sequelize/-/sequelize-1.0.0-beta.5.tgz#662d875ad2fedd781003bb84d303d37be691e0ad"
+  integrity sha512-MpXND4ZheWePaA2rpxhedpeUwzbI0OaLfyKvdpZif/SsFgsDOEzgto3QryLyMSkXtCdzXh54NYwKR9Uku0c0VQ==
   dependencies:
     escape-regexp "0.0.1"
     flat "^5.0.0"
