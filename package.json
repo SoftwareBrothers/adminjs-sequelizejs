@@ -3,7 +3,7 @@
   "version": "1.0.0-beta.3",
   "description": "Sequelize adapter for AdminBro",
   "main": "build/index.js",
-  "types": "types/index.d.ts",
+  "types": "index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "mocha -r ts-node/register src/*.spec.ts",
