@@ -100,7 +100,7 @@ class Resource extends BaseResource {
       where: { [this.primaryKey()]: ids },
     })
     const recordsHash = records.reduce((memo, record) => {
-      memo[this.primaryKey()] = record
+      memo[record[this.primaryKey()]] = record
       return memo
     }, {})
     baseRecords.forEach((baseRecord) => {
