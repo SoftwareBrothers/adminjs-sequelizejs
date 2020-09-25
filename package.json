@@ -6,7 +6,9 @@
   "types": "index.d.ts",
   "scripts": {
     "build": "tsc",
+    "dev": "tsc --watch",
     "test": "mocha -r ts-node/register src/*.spec.ts",
+    "check:all": "yarn build && yarn test && yarn lint",
     "cover": "NODE_ENV=test ./node_modules/nyc/bin/nyc.js --reporter=html -x=spec -x=coverage  --all=true npm test",
     "sequelize": "sequelize",
     "lint": "eslint ./src/**/*.ts",
