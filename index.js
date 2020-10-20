@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /**
  * @module @admin-bro/sequelize
+ * @subcategory Adapters
+ * @section modules
  *
  * @description
  * ### A Sequelize database adapter for AdminBro.
