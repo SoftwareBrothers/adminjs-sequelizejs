@@ -1,6 +1,6 @@
 import escape from 'escape-regexp'
 import {
-  Op, where, fn, col,
+  Op,
 } from 'sequelize'
 
 const convertFilter = (filter) => {
@@ -20,11 +20,11 @@ const convertFilter = (filter) => {
       return {
         [Op.and]: [
           ...(memo[Op.and] || []),
-          where(
-            fn('LOWER', col(`${property.sequelizePath.Model.name}.${property.name()}`)), {
-              [Op.like as unknown as string]: fn('LOWER', `%${escape(value)}%`),
+          {
+            [`${property.name()}`]: {
+              [Op.iLike as unknown as string]: `%${escape(value)}%`,
             },
-          ),
+          },
         ],
         ...memo,
       }
