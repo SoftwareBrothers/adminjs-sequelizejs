@@ -1,6 +1,6 @@
 {
   "name": "@admin-bro/sequelize",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Sequelize adapter for AdminBro",
   "main": "build/index.js",
   "types": "index.d.ts",
