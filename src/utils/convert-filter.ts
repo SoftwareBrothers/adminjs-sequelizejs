@@ -18,6 +18,7 @@ const convertFilter = (filter) => {
         }
       }
       return {
+        ...memo,
         [Op.and]: [
           ...(memo[Op.and] || []),
           {
@@ -25,8 +26,7 @@ const convertFilter = (filter) => {
               [Op.iLike as unknown as string]: `%${escape(value)}%`,
             },
           },
-        ],
-        ...memo,
+        ]
       }
     case 'number':
       if (!Number.isNaN(Number(value))) {
