@@ -26,7 +26,7 @@ const convertFilter = (filter) => {
               [Op.iLike as unknown as string]: `%${escape(value)}%`,
             },
           },
-        ]
+        ],
       }
     case 'number':
       if (!Number.isNaN(Number(value))) {
