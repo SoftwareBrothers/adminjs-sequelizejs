@@ -80,7 +80,7 @@ class Property extends BaseProperty {
 
   availableValues(): Array<string> | null {
     return this.sequelizePath.values && this.sequelizePath.values.length
-      ? this.sequelizePath.values
+      ? this.sequelizePath.values as Array<string>
       : null
   }
 
