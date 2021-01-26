@@ -8,36 +8,64 @@ const convertFilter = (filter) => {
     return {}
   }
   return filter.reduce((memo, filterProperty) => {
-    const { property, value } = filterProperty
+    const { property, value, path: filterPath } = filterProperty
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, index] = filterPath.split('.')
+    const isArray = typeof index !== 'undefined' && !Number.isNaN(Number(index))
+    const previousValue = memo[property.name()] || {}
     switch (property.type()) {
-    case 'string':
+    case 'string': {
       if (property.sequelizePath.values) {
         return {
           [property.name()]: { [Op.eq]: `${escape(value)}` },
           ...memo,
         }
       }
+      if (isArray) {
+        return {
+          ...memo,
+          [property.name()]: {
+            [Op.in]: [
+              ...(previousValue[Op.in] || []),
+              escape(value),
+            ],
+          },
+        }
+      }
       return {
         [Op.and]: [
           ...(memo[Op.and] || []),
           {
-            [`${property.name()}`]: {
+            [property.name()]: {
               [Op.iLike as unknown as string]: `%${escape(value)}%`,
             },
           },
         ],
         ...memo,
       }
-    case 'number':
+    }
+    case 'number': {
       if (!Number.isNaN(Number(value))) {
+        if (isArray) {
+          return {
+            ...memo,
+            [property.name()]: {
+              [Op.in]: [
+                ...(previousValue[Op.in] || []),
+                Number(value),
+              ],
+            },
+          }
+        }
         return {
           [property.name()]: Number(value),
           ...memo,
         }
       }
       return memo
+    }
     case 'date':
-    case 'datetime':
+    case 'datetime': {
       if (value.from || value.to) {
         return {
           [property.name()]: {
@@ -48,8 +76,20 @@ const convertFilter = (filter) => {
         }
       }
       break
+    }
     default:
       break
+    }
+    if (isArray) {
+      return {
+        ...memo,
+        [property.name()]: {
+          [Op.in]: [
+            ...(previousValue[Op.in] || []),
+            value,
+          ],
+        },
+      }
     }
     return {
       [property.name()]: value,
