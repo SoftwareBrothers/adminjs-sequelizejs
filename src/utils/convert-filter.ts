@@ -33,6 +33,7 @@ const convertFilter = (filter) => {
         }
       }
       return {
+        ...memo,
         [Op.and]: [
           ...(memo[Op.and] || []),
           {
@@ -41,7 +42,6 @@ const convertFilter = (filter) => {
             },
           },
         ],
-        ...memo,
       }
     }
     case 'number': {
