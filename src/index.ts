@@ -89,6 +89,9 @@ import Database from './database';
  */
 import Resource from './resource';
 
+export { default as Resource } from './src/resource';
+export { default as Database } from './src/database';
+
 module.exports = { Database, Resource };
 
 export default { Database, Resource };

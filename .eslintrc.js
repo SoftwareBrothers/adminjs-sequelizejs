@@ -1,6 +1,5 @@
 module.exports = {
   env: {
-    browser: true,
     es2020: true,
   },
   extends: [
@@ -8,7 +7,6 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:@typescript-eslint/recommended',
   ],
-  ignorePatterns: ['*/build/**/*', '*.json', '*.txt', 'yarn.lock', '*.yaml'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
