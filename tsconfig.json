@@ -18,6 +18,15 @@
     "declaration": true,
     "allowJs": true
   },
-  "include": ["./src/**/*"],
-  "exclude": ["**/*.spec.ts"]
+  "exclude": [
+    "node_modules",
+    "lib",
+    "spec",
+    "commitlint.config.js",
+    "**/*.spec.ts",
+    "models",
+    "migrations",
+    "config",
+    "example-app"
+  ]
 }
