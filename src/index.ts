@@ -78,8 +78,7 @@
  * @type {typeof BaseDatabase}
  * @static
  */
-import type { BaseDatabase, BaseResource } from 'admin-bro';
-import Database from './src/database';
+import Database from './database';
 
 /**
  * Implementation of {@link BaseResource} for Sequelize Adapter
@@ -88,10 +87,8 @@ import Database from './src/database';
  * @type {typeof BaseResource}
  * @static
  */
-import Resource from './src/resource';
+import Resource from './resource';
 
 module.exports = { Database, Resource };
 
-const SequelizeAdapter = { Database, Resource };
-
-export default SequelizeAdapter;
+export default { Database, Resource };
