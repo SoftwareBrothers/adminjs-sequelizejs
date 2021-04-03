@@ -1,6 +1,6 @@
 {
   "name": "@admin-bro/sequelize",
-  "version": "1.3.0-beta.1",
+  "version": "1.3.0-beta.2",
   "description": "Sequelize adapter for AdminBro",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
