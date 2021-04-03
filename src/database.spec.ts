@@ -35,7 +35,7 @@ describe('Database', () => {
   describe('#resources', () => {
     it('fetches all resources when entire db is given', () => {
       const database = new Database(db)
-      expect(database.resources()).to.have.lengthOf(2)
+      expect(database.resources()).to.have.lengthOf(Object.keys(db.sequelize.models).length)
       expect(database.resources()[0]).to.be.an.instanceof(Resource)
     })
 

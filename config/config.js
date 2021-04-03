@@ -6,5 +6,6 @@ module.exports = {
     database: process.env.POSTGRES_DATABASE || 'database_test',
     host: process.env.POSTGRES_HOST || 'localhost',
     dialect: 'postgres',
+    logging: false,
   },
 }

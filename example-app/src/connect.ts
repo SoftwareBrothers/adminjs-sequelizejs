@@ -27,7 +27,9 @@ const connect = async (): Promise<Sequelize> => {
     console.error('Unable to connect to the database:', error)
   }
 
-  await sequelize.sync({ force: true })
+  if (!process.env.SKIP_SYNC) {
+    await sequelize.sync({ force: true })
+  }
   return sequelize
 }
 
