@@ -3,7 +3,7 @@
  * @subcategory Adapters
  * @section modules
  *
- * @classdesc
+ * @description
  * ### A Sequelize database adapter for AdminBro.
  *
  * #### Installation
@@ -78,7 +78,7 @@
  * @type {typeof BaseDatabase}
  * @static
  */
-import Database from './database';
+import Database from './src/database';
 
 /**
  * Implementation of {@link BaseResource} for Sequelize Adapter
@@ -87,7 +87,7 @@ import Database from './database';
  * @type {typeof BaseResource}
  * @static
  */
-import Resource from './resource';
+import Resource from './src/resource';
 
 export { default as Resource } from './src/resource';
 export { default as Database } from './src/database';
