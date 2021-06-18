@@ -1,1 +1,1 @@
-AdminBro.UserComponents = {}
+AdminJS.UserComponents = {}

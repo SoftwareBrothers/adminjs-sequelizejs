@@ -4,10 +4,10 @@ import buildUser from './users/user.entity'
 import buildComment from './comments/comment.entity'
 
 const connect = async (): Promise<Sequelize> => {
-  const dbName = process.env.POSTGRES_DATABASE || 'adminbro-sequelize'
+  const dbName = process.env.POSTGRES_DATABASE || 'adminjs-sequelize'
   const host = process.env.POSTGRES_HOST || 'localhost'
-  const password = process.env.POSTGRES_PASSWORD || 'adminbro'
-  const user = process.env.POSTGRES_USER || 'adminbro'
+  const password = process.env.POSTGRES_PASSWORD || 'adminjs'
+  const user = process.env.POSTGRES_USER || 'adminjs'
   const port = process.env.POSTGRES_PORT || 5432
 
   const sequelize = new Sequelize(

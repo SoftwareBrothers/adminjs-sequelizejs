@@ -16,7 +16,7 @@
     "types": ["cypress"],
     "paths": {
       "react": ["node_modules/@types/react"],
-      "admin-bro": ["node_modules/admin-bro"],
+      "adminjs": ["node_modules/adminjs"],
     },
     "baseUrl": "."
   },

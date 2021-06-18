@@ -1,7 +1,7 @@
 {
-  "name": "@admin-bro/sequelize",
+  "name": "@adminjs/sequelize",
   "version": "1.2.1",
-  "description": "Sequelize adapter for AdminBro",
+  "description": "Sequelize adapter for AdminJS",
   "main": "build/index.js",
   "types": "index.d.ts",
   "scripts": {
@@ -16,12 +16,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SoftwareBrothers/admin-bro-sequelizejs.git"
+    "url": "git+https://github.com/SoftwareBrothers/adminjs-sequelizejs.git"
   },
   "author": "Wojciech Krysiak",
   "license": "MIT",
   "peerDependencies": {
-    "admin-bro": ">=3.0.0",
+    "adminjs": ">=5.0.0",
     "sequelize": ">=4"
   },
   "husky": {
@@ -39,7 +39,7 @@
     "@types/sinon-chai": "^3.2.4",
     "@typescript-eslint/eslint-plugin": "^3.7.0",
     "@typescript-eslint/parser": "^3.7.0",
-    "admin-bro": "^3.2.3",
+    "adminjs": "^5.0.0",
     "chai": "^4.2.0",
     "eslint": "^7.5.0",
     "eslint-config-airbnb": "^18.2.0",

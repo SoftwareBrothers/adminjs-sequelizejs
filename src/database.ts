@@ -1,4 +1,4 @@
-import { BaseDatabase, BaseResource } from 'admin-bro'
+import { BaseDatabase, BaseResource } from 'adminjs'
 import { Sequelize } from 'sequelize'
 
 import Resource from './resource'

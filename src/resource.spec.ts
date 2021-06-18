@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import { ValidationError, Filter, BaseRecord } from 'admin-bro'
+import { ValidationError, Filter, BaseRecord } from 'adminjs'
 
 import chai, { expect } from 'chai'
 import sinonChai from 'sinon-chai'
