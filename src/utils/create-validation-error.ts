@@ -1,4 +1,4 @@
-import { ValidationError } from 'admin-bro'
+import { ValidationError } from 'adminjs'
 
 const createValidationError = (originalError) => {
   const errors = Object.keys(originalError.errors).reduce((memo, key) => {

@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { unflatten } from 'flat'
-import { BaseResource, BaseRecord, BaseProperty, Filter } from 'admin-bro'
+import { BaseResource, BaseRecord, BaseProperty, Filter } from 'adminjs'
 import { Op } from 'sequelize'
 
 import { Model, ModelAttributeColumnOptions } from 'sequelize/types'
@@ -207,7 +207,7 @@ class Resource extends BaseResource {
    * What it does exactly:
    * - removes keys with empty strings for the `number`, `float` and 'reference' properties.
    *
-   * @param   {Object}  params  received from AdminBro form
+   * @param   {Object}  params  received from AdminJS form
    *
    * @return  {Object}          converted params
    */

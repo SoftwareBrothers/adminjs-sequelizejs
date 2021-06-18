@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /**
- * @module @admin-bro/sequelize
+ * @module @adminjs/sequelize
  * @subcategory Adapters
  * @section modules
  *
  * @description
- * ### A Sequelize database adapter for AdminBro.
+ * ### A Sequelize database adapter for AdminJS.
  *
  * #### Installation
  *
  * To install the adapter run
  *
  * ```
- * yarn add @admin-bro/sequelize
+ * yarn add @adminjs/sequelize
  * ```
  *
  * ### Usage
@@ -20,22 +20,22 @@
  * In order to use it in your project register the adapter first:
  *
  * ```javascript
- * const AdminBro = require('admin-bro')
- * const AdminBroSequelize = require('@admin-bro/sequelize')
+ * const AdminJS = require('adminjs')
+ * const AdminJSSequelize = require('@adminjs/sequelize')
  *
- * AdminBro.registerAdapter(AdminBroSequelize)
+ * AdminJS.registerAdapter(AdminJSSequelize)
  * ```
  *
  * ### Passing an entire database
  *
  * Sequelize generates folder in your app called `./models` and there is an `index.js` file.
- * You can require it and pass to {@link AdminBroOptions} like this:
+ * You can require it and pass to {@link AdminJSOptions} like this:
  *
  * ```javascript
  * const db = require('../models');
- * const AdminBro = new AdminBro({
+ * const AdminJS = new AdminJS({
  *   databases: [db],
- *   //... other AdminBroOptions
+ *   //... other AdminJSOptions
  * })
  * //...
  * ```
@@ -57,7 +57,7 @@
  *
  * ```javascript
  * const db = require('../models');
- * const AdminBro = new AdminBro({
+ * const AdminJS = new AdminJS({
  *   databases: [db], // you can still load an entire database and adjust just one resource
  *   resources: [{
  *     resource: db.vendor,
@@ -75,7 +75,7 @@
 /**
  * Implementation of {@link BaseDatabase} for Sequelize Adapter
  *
- * @memberof module:@admin-bro/sequelize
+ * @memberof module:@adminjs/sequelize
  * @type {typeof BaseDatabase}
  * @static
  */
@@ -84,7 +84,7 @@ const Database = require('./build/database').default
 /**
  * Implementation of {@link BaseResource} for Sequelize Adapter
  *
- * @memberof module:@admin-bro/sequelize
+ * @memberof module:@adminjs/sequelize
  * @type {typeof BaseResource}
  * @static
  */

@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { BaseProperty, PropertyType } from 'admin-bro'
+import { BaseProperty, PropertyType } from 'adminjs'
 import { ModelAttributeColumnOptions } from 'sequelize/types'
 
 const TYPES_MAPPING = [
