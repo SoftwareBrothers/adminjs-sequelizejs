@@ -2,7 +2,7 @@
   "name": "@adminjs/sequelize",
   "version": "2.0.0",
   "description": "Sequelize adapter for AdminJS",
-  "main": "build/index.js",
+  "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
     "build": "tsc",
