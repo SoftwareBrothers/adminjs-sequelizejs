@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { unflatten } from 'flat';
-import { BaseResource, BaseRecord, BaseProperty, Filter } from 'adminjs';
+import { BaseResource, BaseRecord, BaseProperty, Filter, flat } from 'adminjs';
 import { Op } from 'sequelize';
 
 import { Model, ModelAttributeColumnOptions } from 'sequelize/types';
@@ -157,7 +156,7 @@ class Resource extends BaseResource {
 
   async create(params): Promise<Record<string, any>> {
     const parsedParams = this.parseParams(params);
-    const unflattedParams = unflatten(parsedParams);
+    const unflattedParams = flat.unflatten<any, any>(parsedParams);
     try {
       const record = await this.SequelizeModel.create(unflattedParams);
       return record.toJSON();
@@ -174,7 +173,7 @@ class Resource extends BaseResource {
 
   async update(id, params) {
     const parsedParams = this.parseParams(params);
-    const unflattedParams = unflatten(parsedParams);
+    const unflattedParams = flat.unflatten<any, any>(parsedParams);
     try {
       await this.SequelizeModel.update(unflattedParams, {
         where: {
