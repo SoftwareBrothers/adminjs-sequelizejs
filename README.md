@@ -1,19 +1,19 @@
-## admin-bro-sequelizejs
+## adminjs-sequelizejs
 
-This is an official [AdminBro](https://github.com/SoftwareBrothers/admin-bro) adapter which integrates [sequelize ORM](http://docs.sequelizejs.com/) into admin-bro.
+This is an official [AdminJS](https://github.com/SoftwareBrothers/adminjs) adapter which integrates [sequelize ORM](http://docs.sequelizejs.com/) into AdminJS.
 
 ## Usage
 
-The plugin can be registered using standard `AdminBro.registerAdapter` method.
+The plugin can be registered using standard `AdminJS.registerAdapter` method.
 
 ```javascript
-const AdminBro = require('admin-bro')
-const AdminBroSequelize = require('@admin-bro/sequelize')
+const AdminJS = require('adminjs')
+const AdminJSSequelize = require('@adminjs/sequelize')
 
-AdminBro.registerAdapter(AdminBroSequelize)
+AdminJS.registerAdapter(AdminJSSequelize)
 ```
 
-More options can be found on [AdminBro](https://github.com/SoftwareBrothers/admin-bro) official website.
+More options can be found on [AdminJS](https://github.com/SoftwareBrothers/adminjs) official website.
 
 ## Testing
 
@@ -29,7 +29,7 @@ npm run sequelize db:migrate
 
 ## License
 
-AdminBro is Copyright © 2018 SoftwareBrothers.co. It is free software, and may be redistributed under the terms specified in the [LICENSE](LICENSE) file.
+AdminJS is Copyright © 2021 SoftwareBrothers.co. It is free software, and may be redistributed under the terms specified in the [LICENSE](LICENSE) file.
 
 ## About SoftwareBrothers.co
 

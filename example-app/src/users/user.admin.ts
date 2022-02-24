@@ -1,4 +1,4 @@
-import { ResourceOptions } from 'admin-bro'
+import { ResourceOptions } from 'adminjs'
 
 const options: ResourceOptions = {
   properties: {
