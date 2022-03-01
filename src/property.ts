@@ -74,7 +74,7 @@ class Property extends BaseProperty {
       return this.sequelizePath.references as string;
     } if (this.sequelizePath.references && typeof this.sequelizePath.references !== 'string') {
       if (this.sequelizePath.references.model && typeof this.sequelizePath.references.model !== 'string') {
-        return this.sequelizePath.references?.model?.tableName as string
+        return (this.sequelizePath.references?.model as any)?.tableName as string
       }
       return this.sequelizePath.references?.model as string;
     }
