@@ -46,11 +46,12 @@ class Resource extends BaseResource {
 
   databaseName(): string {
     return (this.SequelizeModel.sequelize as any).options.database
-      || (this.SequelizeModel.sequelize as any).options.host;
+      || (this.SequelizeModel.sequelize as any).options.host
+      || 'Sequelize';
   }
 
   databaseType(): string {
-    return (this.SequelizeModel.sequelize as any).options.dialect;
+    return (this.SequelizeModel.sequelize as any).options.dialect || 'other';
   }
 
   name(): string {
