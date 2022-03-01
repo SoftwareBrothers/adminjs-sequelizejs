@@ -41,6 +41,28 @@ const convertFilter = (filter) => {
         ],
       };
     }
+    case 'boolean': {
+      let bool;
+      if (value === 'true') bool = true;
+      if (value === 'false') bool = false;
+      if (bool === undefined) return memo;
+
+      if (isArray) {
+        return {
+          ...memo,
+          [property.name()]: {
+            [Op.in]: [
+              ...(previousValue[Op.in] || []),
+              bool,
+            ],
+          },
+        };
+      }
+      return {
+        ...memo,
+        [property.name()]: bool,
+      };
+    }
     case 'number': {
       if (!Number.isNaN(Number(value))) {
         if (isArray) {
