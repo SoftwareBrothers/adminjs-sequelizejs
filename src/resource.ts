@@ -181,7 +181,7 @@ class Resource extends BaseResource {
           [this.primaryKey()]: id,
         },
         individualHooks: true,
-        hooks: false,
+        hooks: true,
       });
       const record = await this.findById(id);
       return record.toJSON();
