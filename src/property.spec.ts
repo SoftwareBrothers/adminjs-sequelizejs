@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
-import { AvailableTestModels } from './utils/available-test-models';
+import { AvailableTestModels } from './utils/available-test-models.js';
 
-import Property from './property';
+import Property from './property.js';
 
 chai.use(sinonChai);
 

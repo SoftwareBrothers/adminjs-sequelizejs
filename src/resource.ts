@@ -1,11 +1,11 @@
 /* eslint-disable no-param-reassign */
-import { BaseResource, BaseRecord, BaseProperty, Filter, flat } from 'adminjs';
+import { BaseProperty, BaseRecord, BaseResource, Filter, flat } from 'adminjs';
 import { Op } from 'sequelize';
 
 import { Model, ModelAttributeColumnOptions } from 'sequelize/types';
-import Property from './property';
-import convertFilter from './utils/convert-filter';
-import createValidationError from './utils/create-validation-error';
+import Property from './property.js';
+import convertFilter from './utils/convert-filter.js';
+import createValidationError from './utils/create-validation-error.js';
 
 const SEQUELIZE_VALIDATION_ERROR = 'SequelizeValidationError';
 const SEQUELIZE_UNIQUE_ERROR = 'SequelizeUniqueConstraintError';
