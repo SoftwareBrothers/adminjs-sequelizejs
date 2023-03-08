@@ -11,7 +11,7 @@
     "baseUrl": "./src",
     "skipLibCheck": true,
     "module": "commonjs",
-    "target": "ES2018",
+    "target": "esnext",
     "sourceMap": true,
     "outDir": "lib",
     "esModuleInterop": true,
