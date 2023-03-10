@@ -3,7 +3,7 @@ import { Op } from 'sequelize';
 
 const uuidRegex = /^[0-9A-F]{8}-[0-9A-F]{4}-[5|4|3|2|1][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
 
-const convertFilter = (filter) => {
+const convertFilter = (filter, databaseType: string) => {
   if (!filter) {
     return {};
   }
@@ -35,7 +35,7 @@ const convertFilter = (filter) => {
           ...(memo[Op.and] || []),
           {
             [property.name()]: {
-              [(Op.like as unknown) as string]: `%${escape(value)}%`,
+              [(databaseType === 'postgres' ? Op.iLike as unknown : Op.like as unknown) as string]: `%${escape(value)}%`,
             },
           },
         ],

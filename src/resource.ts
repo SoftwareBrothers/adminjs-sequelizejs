@@ -84,7 +84,7 @@ class Resource extends BaseResource {
 
   async count(filter: Filter) {
     return this.SequelizeModel.count(({
-      where: convertFilter(filter),
+      where: convertFilter(filter, this.databaseType()),
     }));
   }
 
@@ -119,7 +119,7 @@ class Resource extends BaseResource {
     const { direction, sortBy } = sort;
     const sequelizeObjects = await this.SequelizeModel
       .findAll({
-        where: convertFilter(filter),
+        where: convertFilter(filter, this.databaseType()),
         limit,
         offset,
         order: [[sortBy as string, (direction || 'asc').toUpperCase()]],
