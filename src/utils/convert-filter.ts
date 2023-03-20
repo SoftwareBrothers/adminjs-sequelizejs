@@ -1,9 +1,9 @@
 import escape from 'escape-regexp';
 import { Op } from 'sequelize';
 
-const uuidRegex = /^[0-9A-F]{8}-[0-9A-F]{4}-[5|4|3|2|1][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
+export const uuidRegex = /^[0-9A-F]{8}-[0-9A-F]{4}-[5|4|3|2|1][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
 
-const convertFilter = (filter) => {
+export const convertFilter = (filter) => {
   if (!filter) {
     return {};
   }

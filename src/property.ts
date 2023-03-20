@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { BaseProperty, PropertyType } from 'adminjs';
-import { ModelAttributeColumnOptions } from 'sequelize/types';
+import { ModelAttributeColumnOptions } from 'sequelize';
 
 const TYPES_MAPPING = [
   ['STRING', 'string'],
@@ -28,9 +28,9 @@ const TYPES_MAPPING = [
 ];
 
 class Property extends BaseProperty {
-  private sequelizePath: ModelAttributeColumnOptions
+  private sequelizePath: ModelAttributeColumnOptions;
 
-  private fieldName: string
+  private fieldName: string;
 
   constructor(sequelizePath: ModelAttributeColumnOptions) {
     const { fieldName } = sequelizePath as any;
@@ -74,7 +74,7 @@ class Property extends BaseProperty {
       return this.sequelizePath.references as string;
     } if (this.sequelizePath.references && typeof this.sequelizePath.references !== 'string') {
       if (this.sequelizePath.references.model && typeof this.sequelizePath.references.model !== 'string') {
-        return (this.sequelizePath.references?.model as any)?.tableName as string
+        return (this.sequelizePath.references?.model as any)?.tableName as string;
       }
       return this.sequelizePath.references?.model as string;
     }

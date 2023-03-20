@@ -5,16 +5,14 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./build/index.js",
-      "types": "./types/index.d.ts"
+      "import": "./lib/index.js",
+      "types": "./lib/index.d.ts"
     }
   },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "test": "mocha -r ts-node/register src/*.spec.ts",
     "check:all": "yarn build && yarn test && yarn lint",
-    "cover": "NODE_ENV=test ./node_modules/nyc/bin/nyc.js --reporter=html -x=spec -x=coverage  --all=true npm test",
     "sequelize": "sequelize",
     "lint": "eslint ./src/**/*.ts",
     "release": "semantic-release"
@@ -27,7 +25,7 @@
   "license": "MIT",
   "peerDependencies": {
     "adminjs": ">=6.0.0",
-    "sequelize": ">=4"
+    "sequelize": ">=6"
   },
   "husky": {
     "hooks": {
@@ -35,39 +33,38 @@
     }
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
-    "@semantic-release/git": "^9.0.0",
-    "@types/chai": "^4.2.12",
-    "@types/mocha": "^8.0.3",
-    "@types/node": "^14.14.37",
-    "@types/sinon": "^9.0.5",
-    "@types/sinon-chai": "^3.2.4",
-    "@typescript-eslint/eslint-plugin": "^3.7.0",
-    "@typescript-eslint/parser": "^3.7.0",
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
+    "@semantic-release/git": "^10.0.1",
+    "@types/chai": "^4.3.4",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.15.3",
+    "@types/sinon": "^10.0.13",
+    "@types/sinon-chai": "^3.2.9",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
     "adminjs": "^6.0.0",
-    "chai": "^4.3.4",
-    "eslint": "^7.5.0",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.3",
-    "eslint-plugin-react-hooks": "^4.0.8",
+    "chai": "^4.3.7",
+    "eslint": "^8.36.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^4.2.5",
-    "mocha": "^9.1.3",
-    "nyc": "^12.0.2",
-    "pg": "^7.7.1",
-    "semantic-release": "^17.0.7",
-    "semantic-release-slack-bot": "^1.6.2",
-    "sequelize": ">4.42.0",
-    "sequelize-cli": "^6.2.0",
-    "sinon": "^12.0.1",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
+    "pg": "^8.10.0",
+    "semantic-release": "^20.1.3",
+    "semantic-release-slack-bot": "^4.0.0",
+    "sequelize": "^6.29.3",
+    "sequelize-cli": "^6.6.0",
+    "sinon": "^15.0.2",
     "sinon-chai": "^3.7.0",
-    "ts-node": "^9.0.0",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "escape-regexp": "0.0.1",
-    "flat": "^5.0.0"
+    "escape-regexp": "0.0.1"
   }
 }

@@ -1,6 +1,6 @@
 import { ValidationError } from 'adminjs';
 
-const createValidationError = (originalError: any): ValidationError => {
+export const createValidationError = (originalError: any): ValidationError => {
   const errors = Object.keys(originalError.errors).reduce((memo, key) => {
     const { path, message, validatorKey } = originalError.errors[key];
     memo[path] = { message, kind: validatorKey }; // eslint-disable-line no-param-reassign
