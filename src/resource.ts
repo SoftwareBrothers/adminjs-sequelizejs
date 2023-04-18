@@ -1,11 +1,10 @@
 /* eslint-disable no-param-reassign */
-import { BaseResource, BaseRecord, BaseProperty, Filter, flat } from 'adminjs';
-import { Op } from 'sequelize';
+import { BaseProperty, BaseRecord, BaseResource, Filter, flat } from 'adminjs';
+import { Op, Model, ModelAttributeColumnOptions } from 'sequelize';
 
-import { Model, ModelAttributeColumnOptions } from 'sequelize/types';
-import Property from './property';
-import convertFilter from './utils/convert-filter';
-import createValidationError from './utils/create-validation-error';
+import Property from './property.js';
+import convertFilter from './utils/convert-filter.js';
+import createValidationError from './utils/create-validation-error.js';
 
 const SEQUELIZE_VALIDATION_ERROR = 'SequelizeValidationError';
 const SEQUELIZE_UNIQUE_ERROR = 'SequelizeUniqueConstraintError';
@@ -25,7 +24,7 @@ type FindOptions = {
 }
 
 class Resource extends BaseResource {
-  private SequelizeModel: ModelType<any>
+  private SequelizeModel: ModelType<any>;
 
   static isAdapterFor(rawResource): boolean {
     return rawResource.sequelize && rawResource.sequelize.constructor.name === 'Sequelize';
@@ -107,7 +106,8 @@ class Resource extends BaseResource {
       const id = baseRecord.param(property.name());
       if (recordsHash[id]) {
         const referenceRecord = new BaseRecord(
-          recordsHash[id].toJSON(), this as unknown as BaseResource,
+          recordsHash[id].toJSON(),
+          this,
         );
         baseRecord.populated[property.name()] = referenceRecord;
       }

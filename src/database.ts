@@ -1,15 +1,15 @@
 import { BaseDatabase, BaseResource } from 'adminjs';
 import { Sequelize } from 'sequelize';
 
-import Resource from './resource';
+import Resource from './resource.js';
 
 class Database extends BaseDatabase {
-  private sequelize: Sequelize
+  private sequelize: Sequelize;
 
   static isAdapterFor(database: any): boolean {
     return (database.sequelize
-            && database.sequelize.constructor.name === 'Sequelize')
-           || database.constructor.name === 'Sequelize';
+      && database.sequelize.constructor.name === 'Sequelize')
+      || database.constructor.name === 'Sequelize';
   }
 
   constructor(database: any) {
