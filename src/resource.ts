@@ -37,9 +37,11 @@ class Resource extends BaseResource {
 
   rawAttributes(): Record<string, ModelAttributeColumnOptions> {
     // different sequelize versions stores attributes in different places
+    // .modelDefinition.attributes => sequelize ^7.0.0
     // .rawAttributes => sequelize ^5.0.0
     // .attributes => sequelize ^4.0.0
     return ((this.SequelizeModel as any).attributes
+      || ((this.SequelizeModel as any).modelDefinition?.attributes && Object.fromEntries((this.SequelizeModel as any).modelDefinition?.attributes))
       || (this.SequelizeModel as any).rawAttributes) as Record<string, ModelAttributeColumnOptions>;
   }
 
@@ -54,11 +56,17 @@ class Resource extends BaseResource {
   }
 
   name(): string {
-    return this.SequelizeModel.tableName;
+    // different sequelize versions stores attributes in different places
+    // .modelDefinition.table => sequelize ^7.0.0
+    // .tableName => sequelize ^4.0.0
+    return (
+      (this.SequelizeModel as any).modelDefinition?.table?.tableName
+      || this.SequelizeModel.tableName
+    );
   }
 
   id(): string {
-    return this.SequelizeModel.tableName;
+    return this.name();
   }
 
   properties(): Array<BaseProperty> {
