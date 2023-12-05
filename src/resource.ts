@@ -232,9 +232,6 @@ class Resource extends BaseResource {
           delete parsedParams[property.name()];
         }
       }
-      if (!property.isEditable()) {
-        delete parsedParams[property.name()];
-      }
     });
     return parsedParams;
   }
